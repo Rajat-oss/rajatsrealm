@@ -49,18 +49,17 @@ export function CustomCursor() {
     <>
       <div
         ref={dot}
-        className="pointer-events-none fixed left-0 top-0 z-[100] hidden h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ink md:block"
+        className="pointer-events-none fixed left-0 top-0 z-[100] hidden h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white mix-blend-difference md:block"
       />
       <div
         ref={ring}
-        className={`pointer-events-none fixed left-0 top-0 z-[100] hidden -translate-x-1/2 -translate-y-1/2 rounded-full border transition-[width,height,background,border-color] duration-200 ease-out md:block ${
-          hover
-            ? "h-14 w-14 border-ember bg-ember/10"
-            : "h-8 w-8 border-ink/30"
+        className={`pointer-events-none fixed left-0 top-0 z-[100] hidden -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/60 transition-[width,height,background,border-color] duration-200 ease-out md:block ${
+          hover ? "h-14 w-14 border-cyan-glow bg-cyan-glow/10" : "h-8 w-8"
         }`}
+        style={{ mixBlendMode: hover ? "normal" : "difference" }}
       >
         {label && (
-          <span className="absolute left-1/2 top-full mt-3 -translate-x-1/2 whitespace-nowrap rounded-full bg-ink px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-bone">
+          <span className="absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-ink">
             {label}
           </span>
         )}

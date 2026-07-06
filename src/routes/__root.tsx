@@ -84,7 +84,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Rajat Jhade is a software engineer and full stack developer building Vintvate — a studio crafting fast, conversion-focused digital products for startups and creators.",
       },
       { name: "author", content: "Rajat Jhade" },
-      { name: "theme-color", content: "#F7F7F5" },
+      { name: "theme-color", content: "#0a0a12" },
       { property: "og:title", content: "Rajat Jhade — Software Engineer & Full Stack Developer" },
       {
         property: "og:description",
@@ -102,7 +102,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap",
       },
     ],
   }),
