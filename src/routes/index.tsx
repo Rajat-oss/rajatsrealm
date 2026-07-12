@@ -18,18 +18,13 @@ import {
   Database,
   Cpu,
   Globe,
-  Download,
-  ArrowRight,
 } from "lucide-react";
 
 import { CustomCursor } from "@/components/CustomCursor";
 import { SmoothScroll } from "@/components/SmoothScroll";
 
-import heroPortrait from "@/assets/hero-portrait.jpg";
-import orbImg from "@/assets/orb-1.jpg";
-import project1 from "@/assets/project-1.jpg";
-import project2 from "@/assets/project-2.jpg";
-import project3 from "@/assets/project-3.jpg";
+import project1 from "@/assets/project-vintvate.png";
+import project2 from "@/assets/project-stackhouse.png";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -38,14 +33,6 @@ if (typeof window !== "undefined") {
 export const Route = createFileRoute("/")({
   component: Portfolio,
 });
-
-const ROLES = [
-  "Software Engineer",
-  "Full Stack Developer",
-  "Product Builder",
-  "Founder @ Vintvate",
-  "Interface Craftsman",
-];
 
 const STACK = [
   "TypeScript",
@@ -73,54 +60,67 @@ const PROJECTS = [
     desc: "A modern web studio building fast, conversion-focused websites and full-stack products for startups, creators, and growing businesses.",
     stack: ["Next.js", "TypeScript", "Postgres", "Motion"],
     img: project1,
-    href: "https://www.linkedin.com/company/vintvate",
+    href: "http://vintvate.vercel.app/",
     accent: "from-emerald-glow/40 to-cyan-glow/20",
   },
   {
     id: "02",
     year: "2025",
-    title: "Barket — Community Layer",
-    tag: "Marketplace · Contribution",
-    desc: "Contributing engineering & community efforts to Barket, an internet marketplace platform based in India. Focused on velocity and reliability.",
-    stack: ["React", "Node", "REST", "AWS"],
+    title: "Stackhouse",
+    tag: "Developer Network · Founding",
+    desc: "Building Stackhouse, a curated community and career accelerator for serious developers and founders to connect, collaborate, and grow.",
+    stack: ["React", "Node.js", "TailwindCSS", "Supabase"],
     img: project2,
-    href: "https://www.linkedin.com/company/bark-et",
-    accent: "from-amber-glow/40 to-destructive/20",
-  },
-  {
-    id: "03",
-    year: "2025",
-    title: "Product Engineering Sandbox",
-    tag: "Full-stack Playground",
-    desc: "A rotating lab of shipped experiments — SaaS starters, AI interfaces, and micro-tools built to sharpen product intuition and engineering craft.",
-    stack: ["TypeScript", "Supabase", "AI SDK", "Edge"],
-    img: project3,
-    href: "#",
-    accent: "from-violet-glow/40 to-accent/20",
+    href: "https://www.stackhouse.social/",
+    accent: "from-amber-glow/40 to-amber-glow/10",
   },
 ];
 
 const EXPERIENCE = [
   {
-    when: "2026 — Now",
-    role: "Founder & Engineer",
+    when: "Jul 2026 — Present",
+    role: "Software Developer",
+    org: "Cikka",
+    where: "Remote",
+    text: "Developing core product features across the frontend, backend, and infrastructure for Cikka's fintech platform.",
+    tag: "Full-time",
+    iconName: "Code2" as const,
+  },
+  {
+    when: "Jan 2026 — Present",
+    role: "Co-Founder",
     org: "Vintvate",
     where: "Bhopal, India",
-    text: "Building Vintvate — a studio for startups and creators. Product thinking, clean engineering, and outcomes over output.",
+    text: "Building Vintvate, a modern web studio creating scalable digital products and platforms.",
+    tag: "Full-time",
+    iconName: "Rocket" as const,
   },
   {
-    when: "2026 — Now",
-    role: "Community Volunteer",
-    org: "Barket",
+    when: "Sep 2025 — Present",
+    role: "Community Member",
+    org: "GDG Bhopal",
     where: "Bhopal, India",
-    text: "Contributing to Barket, an internet marketplace platform. Helping ship features and support the community around it.",
+    text: "Active participant in the Google Developers Group Bhopal, engaging with the local developer community.",
+    tag: "Volunteering",
+    iconName: "Globe" as const,
   },
   {
-    when: "2024 — 2025",
-    role: "Independent Developer",
-    org: "Freelance",
+    when: "Dec 2025 — May 2026",
+    role: "Full-stack Developer",
+    org: "CodeWebX",
     where: "Remote",
-    text: "Shipped MVPs, landing pages and full-stack products for early-stage founders. Learned the craft by shipping — a lot.",
+    text: "Developed and maintained full-stack web applications, collaborating with the team to ship features.",
+    tag: "Internship",
+    iconName: "Layers" as const,
+  },
+  {
+    when: "May 2025 — Jul 2025",
+    role: "Full Stack Intern",
+    org: "Creomind Innovations",
+    where: "Remote",
+    text: "Worked on full-stack development tasks, assisting in building and testing product features.",
+    tag: "Internship",
+    iconName: "Database" as const,
   },
 ];
 
@@ -139,7 +139,6 @@ function Portfolio() {
       <BackgroundFX />
       <Nav />
       <Hero />
-      <Marquee />
       <About />
       <Experience />
       <Skills />
@@ -161,13 +160,15 @@ function BackgroundFX() {
         style={{ background: "var(--gradient-hero)" }}
       />
       <div
-        className="pointer-events-none fixed inset-0 -z-10 opacity-[0.04] mix-blend-overlay"
+        className="pointer-events-none fixed inset-0 -z-10 opacity-[0.03] mix-blend-overlay"
         style={{
           backgroundImage: "url('/grain-overlay.svg')",
           backgroundSize: "200px 200px",
         }}
       />
-      <div className="pointer-events-none fixed inset-0 -z-10 [background:radial-gradient(ellipse_at_top,transparent_60%,var(--ink)_100%)]" />
+      {/* Centered radial gradient and top ellipse to frame the matte black UI and keep colors extremely subtle */}
+      <div className="pointer-events-none fixed inset-0 -z-10 [background:radial-gradient(circle_at_center,transparent_30%,var(--background)_95%)]" />
+      <div className="pointer-events-none fixed inset-0 -z-10 [background:radial-gradient(ellipse_at_top,transparent_50%,var(--ink)_100%)]" />
     </>
   );
 }
@@ -190,14 +191,12 @@ function Nav() {
   ];
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4 transition-all duration-500 ${
-        scrolled ? "pt-3" : "pt-6"
-      }`}
+      className={`fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4 transition-all duration-500 ${scrolled ? "pt-3" : "pt-6"
+        }`}
     >
       <nav
-        className={`glass flex items-center gap-2 rounded-full px-3 py-2 transition-all duration-500 ${
-          scrolled ? "shadow-elevated" : ""
-        }`}
+        className={`glass flex items-center gap-2 rounded-full px-3 py-2 transition-all duration-500 ${scrolled ? "shadow-elevated" : ""
+          }`}
       >
         <a
           href="#top"
@@ -238,139 +237,127 @@ function Nav() {
 
 /* ---------- Hero ---------- */
 function Hero() {
-  const [i, setI] = useState(0);
-  useEffect(() => {
-    const t = setInterval(() => setI((n) => (n + 1) % ROLES.length), 2200);
-    return () => clearInterval(t);
-  }, []);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const sx = useSpring(mx, { stiffness: 60, damping: 20 });
-  const sy = useSpring(my, { stiffness: 60, damping: 20 });
-  const tx = useTransform(sx, (v) => v * 20);
-  const ty = useTransform(sy, (v) => v * 20);
+  // Motion values for 3D tilt of the card
+  const rotateX = useMotionValue(0);
+  const rotateY = useMotionValue(0);
+
+  // Spring settings for physical responsiveness
+  const springConfig = { stiffness: 100, damping: 20 };
+  const rX = useSpring(rotateX, springConfig);
+  const rY = useSpring(rotateY, springConfig);
+
+  // Coordinates of the cursor inside the card for holographic reflection
+  const glowX = useMotionValue(0);
+  const glowY = useMotionValue(0);
+  const smoothGlowX = useSpring(glowX, springConfig);
+  const smoothGlowY = useSpring(glowY, springConfig);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = containerRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+
+    // Normalize mouse coordinates from -0.5 to 0.5
+    const xVal = (e.clientX - rect.left) / rect.width - 0.5;
+    const yVal = (e.clientY - rect.top) / rect.height - 0.5;
+
+    // Convert to tilt degrees
+    rotateX.set(-yVal * 12);
+    rotateY.set(xVal * 12);
+
+    // Relative coordinates for the lighting effects
+    glowX.set(e.clientX - rect.left);
+    glowY.set(e.clientY - rect.top);
+  };
+
+  const handleMouseLeave = () => {
+    // Return to default level values
+    rotateX.set(0);
+    rotateY.set(0);
+  };
 
   return (
     <section
       id="top"
-      className="relative flex min-h-[100svh] items-end overflow-hidden pt-32"
-      onMouseMove={(e) => {
-        const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
-        mx.set((e.clientX - r.left) / r.width - 0.5);
-        my.set((e.clientY - r.top) / r.height - 0.5);
-      }}
+      className="relative flex min-h-[100svh] items-center justify-center overflow-hidden py-24 [perspective:1000px]"
     >
-      {/* floating orb */}
-      <motion.img
-        src={orbImg}
-        alt=""
-        aria-hidden
-        style={{ x: tx, y: ty }}
-        className="animate-float pointer-events-none absolute -right-40 top-20 h-[560px] w-[560px] rounded-full opacity-70 blur-[2px] md:right-[-6rem]"
-      />
-      {/* portrait */}
       <motion.div
-        style={{ x: useTransform(sx, (v) => v * -14), y: useTransform(sy, (v) => v * -14) }}
-        className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 md:block"
+        ref={containerRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          rotateX: rX,
+          rotateY: rY,
+          transformStyle: "preserve-3d",
+        }}
+        className="group relative z-10 mx-auto w-full max-w-[52rem] min-h-[30rem] py-14 md:py-20 flex items-center justify-center select-none"
       >
-        <div className="absolute inset-0 bg-gradient-to-l from-transparent via-background/40 to-background" />
-        <img
-          src={heroPortrait}
-          alt="Rajat Jhade portrait"
-          width={1024}
-          height={1280}
-          className="h-full w-full object-cover object-center opacity-70 mix-blend-screen"
-        />
-      </motion.div>
+        {/* The Glass Card (Back layer - absolute inset-0) */}
+        <div className="absolute inset-0 rounded-[2.5rem] border border-white/10 bg-white/[0.01] backdrop-blur-2xl transition-shadow duration-500 group-hover:shadow-elevated pointer-events-none -z-10" />
 
-      <div className="relative mx-auto w-full max-w-[110rem] px-6 pb-16 md:px-12 md:pb-24">
+        {/* Holographic light refraction following mouse */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="mb-6 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground"
-        >
-          <span className="inline-flex h-2 w-2 animate-pulse-glow rounded-full bg-primary" />
-          Available for select projects · 2026
-        </motion.div>
+          className="pointer-events-none absolute -inset-[1px] rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"
+          style={{
+            background: useTransform(
+              [smoothGlowX, smoothGlowY],
+              ([cx, cy]) => `radial-gradient(400px circle at ${cx}px ${cy}px, rgba(120,119,198,0.14), rgba(0,242,254,0.06), transparent 70%)`
+            ),
+          }}
+        />
 
-        <h1 className="font-display text-[clamp(3.2rem,11vw,12rem)] font-semibold leading-[0.86] tracking-tighter">
-          <RevealLine delay={0.1}>
-            <span className="text-gradient">Rajat</span>
-          </RevealLine>
-          <RevealLine delay={0.25}>
-            <span className="text-foreground">Jhade.</span>
-          </RevealLine>
-        </h1>
+        {/* Micro-border light reflection following mouse */}
+        <motion.div
+          className="pointer-events-none absolute -inset-[1px] rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-20 border border-white/20"
+          style={{
+            background: useTransform(
+              [smoothGlowX, smoothGlowY],
+              ([cx, cy]) => `radial-gradient(120px circle at ${cx}px ${cy}px, rgba(255,255,255,0.18) 0%, transparent 100%)`
+            ),
+          }}
+        />
 
-        <div className="mt-8 grid gap-10 md:grid-cols-[1.4fr_1fr] md:items-end">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.55, duration: 0.7 }}
-            className="max-w-xl text-lg text-muted-foreground md:text-xl"
-          >
-            I'm a{" "}
-            <span className="relative inline-block h-[1.2em] w-[13ch] overflow-hidden align-bottom text-foreground">
-              {ROLES.map((r, idx) => (
-                <span
-                  key={r}
-                  className="absolute inset-0 transition-all duration-700"
-                  style={{
-                    transform: `translateY(${(idx - i) * 100}%)`,
-                    opacity: idx === i ? 1 : 0,
-                  }}
-                >
-                  {r}
-                </span>
-              ))}
-            </span>
-            {" "}building Vintvate from Bhopal — shipping fast, conversion-focused
-            products and interfaces that feel expensive on purpose.
-          </motion.p>
+        {/* Content Container (Sits on top, not cropped by backdrop-blur overlay) */}
+        <div className="relative z-10 w-full px-6 flex flex-col items-center justify-center text-center">
 
+
+
+          {/* Introductory micro-label */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.75, duration: 0.7 }}
-            className="flex flex-wrap items-center gap-3"
+            transition={{ delay: 0.15, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            style={{ transform: "translateZ(50px)" }}
+            className="mb-3 text-[10px] md:text-xs font-mono uppercase tracking-[0.35em] text-muted-foreground/60 select-none pointer-events-none"
           >
-            <MagneticButton href="#work" primary data-cursor="See work">
-              See selected work <ArrowRight className="ml-1 h-4 w-4" />
-            </MagneticButton>
-            <MagneticButton href="#contact" data-cursor="Contact">
-              <Download className="mr-1 h-4 w-4" /> Resume
-            </MagneticButton>
+            who the fuck is
           </motion.div>
-        </div>
 
-        <div className="mt-14 flex items-end justify-between gap-6 border-t border-white/5 pt-6">
-          <div className="grid grid-cols-3 gap-8 text-sm md:gap-16">
-            <Stat k="1+" v="Years shipping" />
-            <Stat k="15+" v="Products built" />
-            <Stat k="100%" v="Async-ready" />
-          </div>
-          <div className="hidden items-center gap-2 font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground md:flex">
-            <span>Scroll</span>
-            <span className="relative flex h-8 w-4 items-start justify-center rounded-full border border-white/20 p-1">
-              <span className="h-1.5 w-0.5 animate-pulse-glow rounded-full bg-white" />
-            </span>
-          </div>
+          {/* Typographical Header - Free to overflow on left and right */}
+          <motion.h1
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            style={{ transform: "translateZ(80px)" }}
+            className="font-display text-[clamp(3.5rem,15vw,18rem)] font-extrabold leading-none tracking-tighter uppercase mb-6 whitespace-nowrap bg-gradient-to-b from-white via-white/85 to-white/10 bg-clip-text text-transparent filter drop-shadow-[0_15px_35px_rgba(0,0,0,0.7)] select-none pointer-events-none z-20"
+          >
+            Rajat Jhade
+          </motion.h1>
+
+          {/* Subtitle / Details */}
+          <p
+            style={{ transform: "translateZ(30px)" }}
+            className="max-w-md mx-auto text-sm md:text-base text-muted-foreground font-mono leading-relaxed z-10"
+          >
+            Founder & Product Builder @ <span className="text-foreground font-semibold">Vintvate</span>
+            <br />
+            Crafting conversion-focused products in Bhopal, India.
+          </p>
         </div>
-      </div>
+      </motion.div>
     </section>
-  );
-}
-
-function Stat({ k, v }: { k: string; v: string }) {
-  return (
-    <div>
-      <div className="font-display text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
-        {k}
-      </div>
-      <div className="mt-1 text-xs uppercase tracking-widest text-muted-foreground">{v}</div>
-    </div>
   );
 }
 
@@ -424,34 +411,17 @@ function MagneticButton({
       ref={ref}
       href={href}
       {...rest}
-      className={`inline-flex items-center rounded-full px-5 py-3 text-sm font-medium transition-[background,box-shadow] duration-300 ${
-        primary
-          ? "bg-primary text-primary-foreground hover:shadow-[0_10px_40px_-10px_var(--primary)]"
-          : "glass text-foreground hover:bg-white/10"
-      }`}
+      className={`inline-flex items-center rounded-full px-5 py-3 text-sm font-medium transition-[background,box-shadow] duration-300 ${primary
+        ? "bg-primary text-primary-foreground hover:shadow-[0_10px_40px_-10px_var(--primary)]"
+        : "glass text-foreground hover:bg-white/10"
+        }`}
     >
       {children}
     </a>
   );
 }
 
-/* ---------- Marquee ---------- */
-function Marquee() {
-  const words = ["Product Engineer", "Interface Craft", "Founder Mindset", "Ship Fast", "Type-Safe", "Motion-First"];
-  const line = [...words, ...words];
-  return (
-    <section aria-hidden className="relative border-y border-white/5 bg-gradient-to-b from-transparent to-white/[0.02] py-8">
-      <div className="flex animate-marquee whitespace-nowrap">
-        {line.map((w, i) => (
-          <span key={i} className="mx-8 inline-flex items-center gap-8 font-display text-4xl font-medium text-muted-foreground md:text-6xl">
-            {w}
-            <Sparkles className="h-6 w-6 text-primary md:h-8 md:w-8" />
-          </span>
-        ))}
-      </div>
-    </section>
-  );
-}
+
 
 /* ---------- About ---------- */
 function About() {
@@ -499,34 +469,514 @@ function About() {
   );
 }
 
-/* ---------- Experience ---------- */
-function Experience() {
+/* ---------- Experience Helper & Redesign ---------- */
+const getIconComponent = (name: string) => {
+  switch (name) {
+    case "Code2":
+      return Code2;
+    case "Layers":
+      return Layers;
+    case "Rocket":
+      return Rocket;
+    default:
+      return Code2;
+  }
+};
+
+function ExperienceCard({ e }: { e: typeof EXPERIENCE[number] }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const Icon = getIconComponent(e.iconName);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const rotateX = useMotionValue(0);
+  const rotateY = useMotionValue(0);
+  const springConfig = { stiffness: 150, damping: 15 };
+  const rX = useSpring(rotateX, springConfig);
+  const rY = useSpring(rotateY, springConfig);
+
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    const el = cardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const xVal = (event.clientX - rect.left) / rect.width - 0.5;
+    const yVal = (event.clientY - rect.top) / rect.height - 0.5;
+    rotateX.set(-yVal * 8); // subtle tilt
+    rotateY.set(xVal * 8);
+  };
+
+  const handleMouseLeave = () => {
+    rotateX.set(0);
+    rotateY.set(0);
+  };
+
   return (
-    <Section eyebrow="Trajectory" title="A short, honest timeline.">
-      <div className="relative">
-        <div className="absolute left-3 top-0 h-full w-px bg-gradient-to-b from-primary/40 via-accent/30 to-transparent md:left-1/2" />
-        <div className="space-y-14">
-          {EXPERIENCE.map((e, i) => (
-            <Reveal key={i} delay={i * 0.08}>
-              <div className={`relative grid gap-6 md:grid-cols-2 md:gap-14 ${i % 2 ? "md:[&>*:first-child]:order-2" : ""}`}>
-                <div className="pl-10 md:pl-0 md:text-right md:pr-14">
-                  <div className="font-mono text-xs uppercase tracking-widest text-muted-foreground">{e.when}</div>
-                  <div className="mt-2 font-display text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
-                    {e.role}
-                  </div>
-                  <div className="mt-1 text-primary">{e.org}</div>
-                  <div className="mt-1 text-sm text-muted-foreground">{e.where}</div>
+    <motion.div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        handleMouseLeave();
+        setIsHovered(false);
+      }}
+      style={{
+        rotateX: rX,
+        rotateY: rY,
+        transformStyle: "preserve-3d",
+      }}
+      animate={{
+        maxWidth: isHovered ? "860px" : "780px"
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 220,
+        damping: 24
+      }}
+      className="timeline-card glass rounded-[2rem] p-6 md:p-8 shadow-2xl flex flex-col justify-between border border-white/5 bg-black backdrop-blur-xl group hover:border-white/10 transition-colors duration-500 select-none cursor-grab active:cursor-grabbing w-full mx-auto"
+    >
+      <div style={{ transform: "translateZ(30px)" }}>
+        <div className="flex justify-between items-start mb-6">
+          <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground/60">{e.tag}</span>
+          <div
+            className="p-2.5 rounded-2xl bg-white/[0.02] border border-white/10 text-foreground group-hover:scale-110 transition-transform duration-500 shadow-inner"
+            style={{
+              boxShadow: `inset 0 0 12px rgba(255,255,255,0.05), 0 4px 12px rgba(0,0,0,0.15)`
+            }}
+          >
+            <Icon className="w-5 h-5" />
+          </div>
+        </div>
+        <h3 className="font-display text-xl md:text-2xl font-bold text-foreground mb-3 uppercase tracking-tight leading-tight">{e.role}</h3>
+        <p className="text-muted-foreground leading-relaxed mb-4 text-sm">{e.text}</p>
+      </div>
+      <div
+        className="border-t border-white/5 pt-5 flex justify-between items-center text-xs font-mono text-muted-foreground"
+        style={{ transform: "translateZ(20px)" }}
+      >
+        <span>{e.where}</span>
+        <span className="text-muted-foreground font-semibold">{e.when}</span>
+      </div>
+    </motion.div>
+  );
+}
+
+function Experience() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const yearsRef = useRef<HTMLDivElement>(null);
+  const rolesRef = useRef<HTMLDivElement>(null);
+  const orgsRef = useRef<HTMLDivElement>(null);
+
+  // Color/Glow state for Canvas Blob interpolation
+  const blobStateRef = useRef({
+    r1: 255, g1: 255, b1: 255,    // white start
+    r2: 150, g2: 150, b2: 150,  // gray start
+    r3: 0, g3: 0, b3: 0,
+    amplitude: 20,
+    speed: 1.0,
+  });
+
+  // Canvas render loop
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let animationFrameId: number;
+    let time = 0;
+
+    const resizeCanvas = () => {
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+    };
+
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    const drawBlob = (
+      cx: number,
+      cy: number,
+      baseRadius: number,
+      time: number,
+      amplitude: number,
+      speedMultiplier: number,
+      pointsCount: number,
+      scale: number,
+      c1: string,
+      c2: string
+    ) => {
+      ctx.beginPath();
+      const angleStep = (2 * Math.PI) / pointsCount;
+      const points = [];
+
+      for (let i = 0; i < pointsCount; i++) {
+        const angle = i * angleStep;
+        const waveOffset =
+          Math.sin(angle * 3 + time * speedMultiplier * 1.2) * amplitude +
+          Math.cos(angle * 5 - time * speedMultiplier * 0.8) * (amplitude * 0.5) +
+          Math.sin(angle * 7 + time * speedMultiplier * 1.5) * (amplitude * 0.3);
+
+        const r = (baseRadius + waveOffset) * scale;
+        const x = cx + r * Math.cos(angle);
+        const y = cy + r * Math.sin(angle);
+        points.push({ x, y });
+      }
+
+      ctx.moveTo(points[0].x, points[0].y);
+      for (let i = 0; i < points.length; i++) {
+        const p0 = points[i];
+        const p1 = points[(i + 1) % points.length];
+        const xc = (p0.x + p1.x) / 2;
+        const yc = (p0.y + p1.y) / 2;
+        ctx.quadraticCurveTo(p0.x, p0.y, xc, yc);
+      }
+      ctx.closePath();
+
+      const grad = ctx.createRadialGradient(cx, cy, baseRadius * 0.1, cx, cy, baseRadius * 1.5);
+      grad.addColorStop(0, c1);
+      grad.addColorStop(0.6, c2);
+      grad.addColorStop(1, "rgba(0,0,0,0)");
+
+      ctx.fillStyle = grad;
+      ctx.fill();
+    };
+
+    const render = () => {
+      const rect = canvas.getBoundingClientRect();
+      const w = rect.width;
+      const h = rect.height;
+
+      // Transparent clear to create fluid trailing
+      ctx.fillStyle = "rgba(8, 8, 8, 0.12)";
+      ctx.fillRect(0, 0, w, h);
+
+      const state = blobStateRef.current;
+      time += 0.015 * state.speed;
+
+      const cx = w / 2;
+      const cy = h / 2;
+
+      const color1 = `rgba(${Math.round(state.r1)}, ${Math.round(state.g1)}, ${Math.round(state.b1)}, 0.35)`;
+      const color2 = `rgba(${Math.round(state.r2)}, ${Math.round(state.g2)}, ${Math.round(state.b2)}, 0.12)`;
+
+      // Outer Layer
+      drawBlob(cx, cy, w * 0.35, time, state.amplitude, 0.7, 12, 1.0, color1, color2);
+      // Middle Layer
+      drawBlob(cx, cy, w * 0.28, time + 20, state.amplitude * 0.8, 1.2, 8, 1.12, color1, color2);
+      // Inner Layer
+      drawBlob(cx, cy, w * 0.2, time + 40, state.amplitude * 0.6, 1.6, 6, 1.25, color1, color2);
+
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    render();
+
+    return () => {
+      window.removeEventListener("resize", resizeCanvas);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
+
+  // Helper to activate left-side metadata and canvas blob state for a given Era index
+  const activateEra = (idx: number) => {
+    const e = EXPERIENCE[idx];
+    if (!e) return;
+
+    // Odometer Roll Text
+    gsap.to(yearsRef.current, { yPercent: -idx * 20, duration: 0.7, ease: "power2.out", overwrite: "auto" });
+    gsap.to(rolesRef.current, { yPercent: -idx * 20, duration: 0.7, ease: "power2.out", overwrite: "auto" });
+    gsap.to(orgsRef.current, { yPercent: -idx * 20, duration: 0.7, ease: "power2.out", overwrite: "auto" });
+
+    // Morph blob colors (Grayscale)
+    let targetColors = { r1: 255, g1: 255, b1: 255, r2: 150, g2: 150, b2: 150, amplitude: 20, speed: 1.0 }; // Era 01
+    if (idx === 1) {
+      targetColors = { r1: 220, g1: 220, b1: 220, r2: 120, g2: 120, b2: 120, amplitude: 28, speed: 1.4 }; // Era 02
+    } else if (idx === 2) {
+      targetColors = { r1: 200, g1: 200, b1: 200, r2: 100, g2: 100, b2: 100, amplitude: 25, speed: 1.2 }; // Era 03
+    }
+
+    gsap.to(blobStateRef.current, {
+      r1: targetColors.r1,
+      g1: targetColors.g1,
+      b1: targetColors.b1,
+      r2: targetColors.r2,
+      g2: targetColors.g2,
+      b2: targetColors.b2,
+      amplitude: targetColors.amplitude,
+      speed: targetColors.speed,
+      duration: 0.7,
+      ease: "power2.out"
+    });
+
+    // Ambient background glow (Grayscale stops)
+    const bgGlow = idx === 0
+      ? `radial-gradient(circle at 30% 50%, color-mix(in oklab, white 5%, transparent) 0%, transparent 60%)`
+      : `radial-gradient(circle at 30% 50%, color-mix(in oklab, white 8%, transparent) 0%, transparent 60%)`;
+
+    gsap.to(".dynamic-glow-bg", {
+      background: bgGlow,
+      duration: 0.7,
+      ease: "power2.out"
+    });
+  };
+
+  // GSAP ScrollTrigger timeline to interpolate state and text scrolling
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+
+    let ctx = gsap.context(() => {
+      if (!mediaQuery.matches) {
+        // Mobile Animation: Simple scroll reveal for each card
+        const cards = gsap.utils.toArray(".mobile-card");
+        cards.forEach((card: any) => {
+          gsap.fromTo(
+            card,
+            { opacity: 0, y: 50, scale: 0.95 },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.8,
+              scrollTrigger: {
+                trigger: card,
+                start: "top 85%",
+                toggleActions: "play none none reverse",
+              },
+            }
+          );
+        });
+
+        // Mobile line drawing
+        gsap.fromTo(
+          ".mobile-line-progress",
+          { scaleY: 0 },
+          {
+            scaleY: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: ".mobile-timeline-container",
+              start: "top 75%",
+              end: "bottom 60%",
+              scrub: true,
+            },
+          }
+        );
+        return;
+      }
+
+      // Desktop ScrollTriggers for each card
+      const cards = gsap.utils.toArray(".desktop-scroll-card");
+      if (cards.length === 0) return;
+
+      cards.forEach((card: any, idx: number) => {
+        const glow = card.querySelector(".desktop-glow-bg");
+
+        const isLastCard = idx === cards.length - 1;
+
+        // A single timeline handles entering, staying focused, and leaving to avoid property conflicts
+        const cardTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: card,
+            start: "top 85%",
+            end: "bottom 30%",
+            scrub: 0.5,
+          }
+        });
+
+        if (isLastCard) {
+          cardTl
+            .fromTo(card,
+              { opacity: 0.15, scale: 0.9 },
+              { opacity: 1, scale: 1.08, ease: "power1.inOut", duration: 1 }
+            )
+            .to(card, { opacity: 1, scale: 1.08, duration: 3 });
+        } else {
+          cardTl
+            .fromTo(card,
+              { opacity: 0.15, scale: 0.9 },
+              { opacity: 1, scale: 1.08, ease: "power1.inOut", duration: 1 }
+            )
+            .to(card, { opacity: 1, scale: 1.08, duration: 2.5 })
+            .to(card, { opacity: 0.15, scale: 0.9, ease: "power1.inOut", duration: 1 });
+        }
+
+        if (glow) {
+          cardTl
+            .fromTo(glow,
+              { opacity: 0 },
+              { opacity: 0.35, ease: "power1.inOut", duration: 1 },
+              0
+            )
+            .to(glow, { opacity: 0.35, duration: 1 })
+            .to(glow, { opacity: 0, ease: "power1.inOut", duration: 1 });
+        }
+
+        // Trigger to change active state (left column rolling text and canvas colors)
+        ScrollTrigger.create({
+          trigger: card,
+          start: "top 65%",   // when top of card crosses 65% of viewport
+          end: "bottom 35%",  // when bottom of card crosses 35% of viewport
+          onEnter: () => activateEra(idx),
+          onEnterBack: () => activateEra(idx),
+        });
+      });
+
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <>
+      {/* Desktop layout */}
+      <section id="trajectory" ref={containerRef} className="relative z-10 hidden md:grid grid-cols-12 gap-12 max-w-[100rem] mx-auto px-6 md:px-12 py-32 overflow-x-clip">
+        <div
+          className="dynamic-glow-bg pointer-events-none absolute inset-0 -z-10 transition-colors duration-500"
+          style={{ background: "radial-gradient(circle at 30% 50%, color-mix(in oklab, white 5%, transparent) 0%, transparent 60%)" }}
+        />
+
+        {/* Left Sticky Column */}
+        <div className="col-span-5 sticky top-0 h-screen flex flex-col justify-center select-none overflow-hidden pr-8">
+          <span className="font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground/60 mb-6">— Trajectory</span>
+
+          {/* Rolling Years Display */}
+          <div className="h-16 overflow-hidden mb-2">
+            <div ref={yearsRef} className="flex flex-col">
+              {EXPERIENCE.map((e, idx) => (
+                <div key={idx} className="h-16 shrink-0 font-mono text-2xl font-semibold tracking-wider flex items-center text-foreground">
+                  {e.when}
                 </div>
-                <div className="pl-10 md:pl-14">
-                  <p className="text-muted-foreground md:text-lg">{e.text}</p>
+              ))}
+            </div>
+          </div>
+
+          {/* Rolling Roles Display */}
+          <div className="h-20 overflow-hidden mb-1">
+            <div ref={rolesRef} className="flex flex-col">
+              {EXPERIENCE.map((e, idx) => (
+                <div key={idx} className="h-20 shrink-0 font-display text-4xl lg:text-5xl font-extrabold text-foreground tracking-tight flex items-center uppercase leading-none">
+                  {e.role}
                 </div>
-                <span className="absolute left-1 top-2 h-5 w-5 rounded-full border-2 border-primary bg-background md:left-1/2 md:-translate-x-1/2" />
-              </div>
-            </Reveal>
+              ))}
+            </div>
+          </div>
+
+          {/* Rolling Orgs Display */}
+          <div className="h-10 overflow-hidden mb-12">
+            <div ref={orgsRef} className="flex flex-col">
+              {EXPERIENCE.map((e, idx) => (
+                <div key={idx} className="h-10 shrink-0 text-muted-foreground font-mono text-lg flex items-center">
+                  @ {e.org} · {e.where}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* HTML5 Canvas Liquid Wave Blob */}
+          <div className="relative w-72 h-72 flex items-center justify-center border border-white/5 rounded-full bg-white/[0.01] backdrop-blur-md shadow-inner overflow-hidden">
+            <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none text-white/5 text-[150px] font-display font-black leading-none uppercase tracking-tighter select-none">
+              R
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column (Scrolling Cards) */}
+        <div className="col-span-7 flex flex-col gap-[35vh] py-[30vh]">
+          {EXPERIENCE.map((e, idx) => (
+            <div
+              key={idx}
+              className="desktop-scroll-card w-full origin-center relative flex justify-center"
+              style={{
+                opacity: idx === 0 ? 1 : 0.15,
+                transform: idx === 0 ? "scale(1.08)" : "scale(0.9)",
+              }}
+            >
+              {/* Giant glowing background behind the glass card - spanning half of the screen with grayscale gradient */}
+              <div
+                className="desktop-glow-bg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[160%] h-[160%] rounded-full blur-[110px] -z-10 pointer-events-none"
+                style={{
+                  background: `radial-gradient(circle, color-mix(in oklab, white 15%, transparent) 0%, color-mix(in oklab, white 5%, transparent) 45%, transparent 70%)`,
+                  opacity: idx === 0 ? 0.35 : 0,
+                }}
+              />
+              <ExperienceCard e={e} />
+            </div>
           ))}
         </div>
-      </div>
-    </Section>
+      </section>
+
+      {/* Mobile layout */}
+      <section id="trajectory-mobile" className="block md:hidden py-24 px-6 relative mobile-timeline-container overflow-hidden">
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-72 h-72 rounded-full bg-white/5 blur-3xl -z-10 pointer-events-none" />
+        <div className="absolute top-2/4 left-1/2 -translate-x-1/2 w-72 h-72 rounded-full bg-white/5 blur-3xl -z-10 pointer-events-none" />
+        <div className="absolute top-3/4 left-1/2 -translate-x-1/2 w-72 h-72 rounded-full bg-white/5 blur-3xl -z-10 pointer-events-none" />
+
+        <div className="mb-14">
+          <span className="font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground/60">— Trajectory</span>
+          <h2 className="mt-2 font-display text-4xl font-semibold tracking-tight text-foreground uppercase">A short, honest timeline.</h2>
+        </div>
+
+        <div className="relative pl-6">
+          {/* Vertical progress line */}
+          <div className="absolute left-0 top-2 bottom-2 w-0.5 bg-white/5">
+            <div className="mobile-line-progress w-full h-full bg-white/20 origin-top scale-y-0" />
+          </div>
+
+          <div className="space-y-10">
+            {EXPERIENCE.map((e, idx) => {
+              const Icon = getIconComponent(e.iconName);
+              return (
+                <div key={idx} className="mobile-card glass rounded-3xl p-5 border border-white/5 bg-black backdrop-blur-md relative overflow-hidden">
+                  {/* Glowing background behind mobile glass card */}
+                  <div
+                    className="absolute -inset-10 rounded-full blur-[60px] -z-10 pointer-events-none opacity-[0.08]"
+                    style={{
+                      background: `radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 75%)`,
+                    }}
+                  />
+
+                  <div
+                    className="absolute -left-[27px] top-5 w-3 h-3 rounded-full border border-background shadow-lg"
+                    style={{
+                      borderColor: "var(--background)",
+                      backgroundColor: "var(--foreground)",
+                      boxShadow: `0 0 10px rgba(255,255,255,0.3)`
+                    }}
+                  />
+
+                  <div className="flex justify-between items-center mb-3">
+                    <span className="font-mono text-[9px] uppercase tracking-widest text-muted-foreground/60">{e.tag}</span>
+                    <span className="font-mono text-[10px] font-semibold text-muted-foreground">{e.when}</span>
+                  </div>
+
+                  <div className="flex items-center gap-3 mb-2">
+                    <div
+                      className="p-1.5 rounded-xl bg-white/[0.02] border border-white/10"
+                      style={{
+                        boxShadow: `inset 0 0 8px rgba(255,255,255,0.05)`
+                      }}
+                    >
+                      <Icon className="w-4 h-4" />
+                    </div>
+                    <h3 className="font-display text-base font-bold text-foreground uppercase tracking-tight">{e.role}</h3>
+                  </div>
+
+                  <div className="font-mono text-[10px] text-muted-foreground mb-3">@ {e.org} · {e.where}</div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{e.text}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
 
@@ -571,79 +1021,77 @@ function Skills() {
 function Projects() {
   return (
     <Section id="work" eyebrow="Selected work" title="Things I've shipped." wide>
-      <div className="space-y-24">
+      <div className="grid gap-6 md:grid-cols-2">
         {PROJECTS.map((p, i) => (
-          <ProjectRow key={p.id} p={p} idx={i} />
+          <ProjectCard key={p.id} p={p} idx={i} />
         ))}
       </div>
+      <Reveal delay={0.2}>
+        <div className="mt-14 flex justify-center">
+          <MagneticButton href="#" data-cursor="Show more">
+            Show more <ArrowUpRight className="ml-2 inline h-4 w-4" />
+          </MagneticButton>
+        </div>
+      </Reveal>
     </Section>
   );
 }
 
-function ProjectRow({ p, idx }: { p: (typeof PROJECTS)[number]; idx: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], [60, -60]);
-  const rotate = useTransform(scrollYProgress, [0, 1], [idx % 2 ? 2 : -2, idx % 2 ? -2 : 2]);
+function ProjectCard({ p, idx }: { p: (typeof PROJECTS)[number]; idx: number }) {
   return (
-    <div
-      ref={ref}
-      className={`grid gap-10 md:grid-cols-2 md:items-center md:gap-16 ${
-        idx % 2 ? "md:[&>*:first-child]:order-2" : ""
-      }`}
-    >
-      <Reveal>
-        <a
-          href={p.href}
-          target="_blank"
-          rel="noreferrer"
-          data-cursor="View"
-          className="group relative block"
-        >
-          <motion.div
-            style={{ y, rotate }}
-            className="relative overflow-hidden rounded-3xl border border-white/10 shadow-elevated"
-          >
-            <div className={`absolute inset-0 z-10 bg-gradient-to-tr ${p.accent} opacity-70 mix-blend-overlay`} />
-            <img
-              src={p.img}
-              alt={p.title}
-              loading="lazy"
-              width={1280}
-              height={800}
-              className="w-full transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
-            />
-            <div className="absolute inset-x-0 bottom-0 z-20 flex items-center justify-between p-5 text-xs uppercase tracking-widest text-white/90">
-              <span className="font-mono">{p.tag}</span>
-              <ArrowUpRight className="h-4 w-4" />
-            </div>
-          </motion.div>
-        </a>
-      </Reveal>
-      <Reveal delay={0.1}>
-        <div>
-          <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+    <Reveal delay={idx * 0.1}>
+      <a
+        href={p.href}
+        target="_blank"
+        rel="noreferrer"
+        data-cursor="View"
+        className="group block glass rounded-[2rem] overflow-hidden border border-white/5 bg-white/[0.01] hover:border-white/10 hover:bg-white/[0.02] transition duration-500 hover:shadow-elevated"
+      >
+        {/* Image Container with zoom aspect ratio */}
+        <div className="relative overflow-hidden aspect-[1.6/1]">
+          <div className={`absolute inset-0 z-10 bg-gradient-to-tr ${p.accent} opacity-40 mix-blend-overlay`} />
+          <img
+            src={p.img}
+            alt={p.title}
+            loading="lazy"
+            width={1280}
+            height={800}
+            className="w-full h-full object-cover transition-transform duration-[1000ms] ease-out group-hover:scale-[1.04]"
+          />
+          <div className="absolute inset-x-0 bottom-0 z-20 flex items-center justify-between p-4 text-[10px] md:text-xs uppercase tracking-widest text-white/90">
+            <span className="font-mono bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/5">{p.tag}</span>
+            <span className="font-mono bg-black/40 backdrop-blur-md p-1.5 rounded-full border border-white/5 flex items-center justify-center">
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </span>
+          </div>
+        </div>
+
+        {/* Content details */}
+        <div className="p-6 md:p-8">
+          <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
             <span>{p.id}</span>
-            <span className="h-px w-8 bg-white/20" />
+            <span className="h-px w-6 bg-white/20" />
             <span>{p.year}</span>
           </div>
-          <h3 className="mt-4 font-display text-4xl font-semibold leading-[1.05] tracking-tight md:text-6xl">
+          <h3 className="mt-3 font-display text-2xl font-semibold leading-tight text-foreground transition group-hover:text-primary">
             {p.title}
           </h3>
-          <p className="mt-5 max-w-lg text-muted-foreground md:text-lg">{p.desc}</p>
-          <div className="mt-6 flex flex-wrap gap-2">
+          <p className="mt-3 text-sm text-muted-foreground leading-relaxed line-clamp-2">
+            {p.desc}
+          </p>
+          <div className="mt-5 flex flex-wrap gap-1.5">
             {p.stack.map((s) => (
               <span
                 key={s}
-                className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-xs font-medium text-muted-foreground"
+                className="rounded-full border border-white/5 bg-white/[0.02] px-2.5 py-0.5 text-[10px] font-mono text-muted-foreground group-hover:text-foreground group-hover:border-white/10 transition duration-300"
               >
                 {s}
               </span>
             ))}
           </div>
         </div>
-      </Reveal>
-    </div>
+      </a>
+    </Reveal>
   );
 }
 
