@@ -76,6 +76,27 @@ const PROJECTS = [
   },
 ];
 
+const SHIPPED_ITEMS = [
+  {
+    title: "Vintvate Studio",
+    tag: "Web Studio",
+    desc: "A modern web studio building fast, conversion-focused websites.",
+    img: project1,
+  },
+  {
+    title: "Stackhouse",
+    tag: "Developer Network",
+    desc: "A curated community and career accelerator for serious developers.",
+    img: project2,
+  },
+  {
+    title: "Nexus Dashboard",
+    tag: "Internal Tool",
+    desc: "A comprehensive analytics dashboard for managing user metrics.",
+    img: project1,
+  },
+];
+
 const EXPERIENCE = [
   {
     when: "Jul 2026 — Present",
@@ -143,6 +164,7 @@ function Portfolio() {
       <Experience />
       <Skills />
       <Projects />
+      <Shipped />
       <Services />
       <Philosophy />
       <Contact />
@@ -1095,6 +1117,318 @@ function ProjectCard({ p, idx }: { p: (typeof PROJECTS)[number]; idx: number }) 
   );
 }
 
+/* ---------- Shipped ---------- */
+interface ShippedCardProps {
+  item: (typeof SHIPPED_ITEMS)[number];
+  idx: number;
+  isActive: boolean;
+  angleStep: number;
+  yStep: number;
+  innerRef: (el: HTMLDivElement | null) => void;
+}
+
+function ShippedCard({ item, idx, isActive, angleStep, yStep, innerRef }: ShippedCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  
+  // Motion values for local 3D tilt (hover)
+  const rotateX = useMotionValue(0);
+  const rotateY = useMotionValue(0);
+  const glowX = useMotionValue(0);
+  const glowY = useMotionValue(0);
+
+  const springConfig = { stiffness: 120, damping: 20 };
+  const rX = useSpring(rotateX, springConfig);
+  const rY = useSpring(rotateY, springConfig);
+  const smoothGlowX = useSpring(glowX, springConfig);
+  const smoothGlowY = useSpring(glowY, springConfig);
+
+  const holographicGlow = useTransform(
+    [smoothGlowX, smoothGlowY],
+    ([cx, cy]) => `radial-gradient(350px circle at ${cx}px ${cy}px, rgba(255,255,255,0.06), rgba(0,242,254,0.03), transparent 70%)`
+  );
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isActive) return;
+    const el = cardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+
+    // Tilt angle calculations (max 12 degrees)
+    const xVal = (e.clientX - rect.left) / rect.width - 0.5;
+    const yVal = (e.clientY - rect.top) / rect.height - 0.5;
+
+    rotateX.set(-yVal * 12);
+    rotateY.set(xVal * 12);
+
+    // Glow position
+    glowX.set(e.clientX - rect.left);
+    glowY.set(e.clientY - rect.top);
+  };
+
+  const handleMouseLeave = () => {
+    rotateX.set(0);
+    rotateY.set(0);
+  };
+
+  return (
+    <div
+      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none"
+      style={{
+        transformStyle: "preserve-3d",
+        transform: `rotateY(${idx * angleStep}deg) translateY(${idx * yStep}px) translateZ(var(--helix-radius))`,
+      }}
+    >
+      <motion.div
+        ref={(el) => {
+          cardRef.current = el;
+          innerRef(el);
+        }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        className={`shipped-card-inner w-[88vw] max-w-[480px] h-[380px] md:h-[430px] rounded-[2rem] overflow-hidden border bg-black/60 relative group transition-colors duration-500 flex flex-col justify-between p-6 md:p-8 ${
+          isActive 
+            ? "border-white/20 shadow-[0_30px_100px_rgba(0,0,0,0.8)] cursor-grab active:cursor-grabbing" 
+            : "border-white/5 pointer-events-none"
+        }`}
+        style={{
+          rotateX: rX,
+          rotateY: rY,
+          transformStyle: "preserve-3d",
+        }}
+      >
+        {/* Holographic light refraction following mouse */}
+        {isActive && (
+          <motion.div
+            className="pointer-events-none absolute -inset-[1px] rounded-[2rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"
+            style={{
+              background: holographicGlow,
+            }}
+          />
+        )}
+
+        {/* Ambient top border reflection */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/[0.04] to-transparent pointer-events-none z-10" />
+
+        {/* Background Image with depth translation */}
+        <div 
+          className="absolute inset-0 overflow-hidden z-0"
+          style={{ transform: "translateZ(-20px)" }}
+        >
+          <div className="absolute inset-0 bg-black/50 z-10 transition-colors duration-700" />
+          <img 
+            src={item.img} 
+            alt={item.title} 
+            className="absolute inset-0 w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-[2s] ease-out opacity-85" 
+          />
+        </div>
+        
+        {/* Card Header (Tag) */}
+        <div 
+          className="self-end relative z-20"
+          style={{ transform: "translateZ(30px)" }}
+        >
+          <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/90 font-semibold bg-black/60 backdrop-blur-xl px-3.5 py-1.5 rounded-full border border-white/10 shadow-lg inline-flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse-glow" />
+            {item.tag}
+          </div>
+        </div>
+
+        {/* Card Footer (Title & Description & Button) */}
+        <div 
+          className="relative z-20 flex flex-col items-start gap-4 w-full"
+          style={{ transform: "translateZ(50px)" }}
+        >
+          <div className="bg-black/50 backdrop-blur-md p-5 rounded-2xl border border-white/10 w-full">
+            <h3 className="font-display text-xl md:text-2xl font-bold text-white mb-2 leading-tight tracking-tight">
+              {item.title}
+            </h3>
+            <p className="text-white/70 text-xs md:text-sm leading-relaxed mb-4">
+              {item.desc}
+            </p>
+            <MagneticButton href="#" data-cursor="Explore">
+              View Project <ArrowUpRight className="ml-2 inline h-4 w-4" />
+            </MagneticButton>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+function Shipped() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const cylinderRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [activeCardIndex, setActiveCardIndex] = useState(0);
+
+  const angleStep = 80; // separation angle for cards (helical spacing)
+  const yStep = 200;    // vertical offset separating cards
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const cylinder = cylinderRef.current;
+    const container = containerRef.current;
+    if (!cylinder || !container) return;
+
+    const cards = cardRefs.current;
+    const total = SHIPPED_ITEMS.length;
+
+    // Register scrolltrigger plugin
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Initial setup of cards and static cylinder tilt
+    gsap.set(cylinder, { rotationX: 6 });
+    cards.forEach((card, idx) => {
+      if (!card) return;
+      if (idx === 0) {
+        gsap.set(card, { opacity: 1, scale: 1.05 });
+      } else {
+        gsap.set(card, { opacity: 0.25, scale: 0.85 });
+      }
+    });
+
+    // Main scroll timeline - completely continuous & linear
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: container,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.8, // smooth scrubbing delay
+        onUpdate: (self) => {
+          const rawIndex = self.progress * (total - 1);
+          const index = Math.round(rawIndex);
+          setActiveCardIndex(index);
+        }
+      }
+    });
+
+    // 1. Rotate and translate the cylinder structure continuously from 0 to 1
+    tl.to(cylinder, {
+      rotationY: -(total - 1) * angleStep,
+      y: -(total - 1) * yStep,
+      ease: "none",
+      duration: 1.0,
+    }, 0);
+
+    // 2. Animate card opacity/scale transitions continuously using only .to() tweens (prevents fromTo glitches)
+    SHIPPED_ITEMS.forEach((_, idx) => {
+      const card = cards[idx];
+      if (!card) return;
+
+      if (idx === 0) {
+        // First card starts at 1.0, fades out from progress 0 to 0.5
+        tl.to(card, {
+          opacity: 0.25,
+          scale: 0.85,
+          ease: "sine.inOut",
+          duration: 0.5,
+        }, 0);
+      } else if (idx === total - 1) {
+        // Last card starts at 0.25, fades in from progress 0.5 to 1.0
+        tl.to(card, {
+          opacity: 1,
+          scale: 1.05,
+          ease: "sine.inOut",
+          duration: 0.5,
+        }, 0.5);
+      } else {
+        // Middle card starts at 0.25, fades in from 0 to 0.5, then fades out from 0.5 to 1.0
+        tl.to(card, {
+          opacity: 1,
+          scale: 1.05,
+          ease: "sine.inOut",
+          duration: 0.5,
+        }, 0);
+        tl.to(card, {
+          opacity: 0.25,
+          scale: 0.85,
+          ease: "sine.inOut",
+          duration: 0.5,
+        }, 0.5);
+      }
+    });
+
+    return () => {
+      tl.kill();
+    };
+  }, []);
+
+  return (
+    <section ref={containerRef} id="shipped" className="relative bg-black w-full h-[300vh]">
+      <style>{`
+        .helix-stage {
+          --helix-radius: 120px;
+        }
+        @media (min-width: 640px) {
+          .helix-stage {
+            --helix-radius: 200px;
+          }
+        }
+        @media (min-width: 1024px) {
+          .helix-stage {
+            --helix-radius: 380px;
+          }
+        }
+      `}</style>
+
+      {/* Background Radial Gradient */}
+      <div 
+        className="absolute inset-0 z-0 pointer-events-none opacity-20 mix-blend-overlay" 
+        style={{ background: "radial-gradient(circle at 50% 50%, var(--primary) 0%, transparent 60%)" }} 
+      />
+      
+      {/* Sticky Stage Wrapper */}
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center items-center helix-stage [perspective:1200px]">
+        
+        {/* Float-in Section Header */}
+        <div className="absolute top-10 left-6 md:left-12 z-30 pointer-events-none select-none">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-3">
+            <Sparkles className="w-3.5 h-3.5 text-primary" />
+            <span className="font-mono text-[9px] uppercase tracking-widest text-white/80">Shipped Portfolio</span>
+          </div>
+          <h2 className="font-display text-2xl md:text-4xl font-bold tracking-tight text-white uppercase">
+            Things I've shipped.
+          </h2>
+        </div>
+
+        {/* Central Core Glowing neon beam */}
+        <div className="absolute w-[180px] h-[500px] rounded-full bg-primary/5 blur-[100px] pointer-events-none z-0 animate-pulse-glow" />
+
+        {/* 3D Helix Cylinder */}
+        <div
+          ref={cylinderRef}
+          className="relative w-full h-[50vh] flex items-center justify-center"
+          style={{
+            transformStyle: "preserve-3d",
+          }}
+        >
+          {SHIPPED_ITEMS.map((item, idx) => (
+            <ShippedCard
+              key={idx}
+              item={item}
+              idx={idx}
+              isActive={idx === activeCardIndex}
+              angleStep={angleStep}
+              yStep={yStep}
+              innerRef={(el) => {
+                cardRefs.current[idx] = el;
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Progress Odometer Display in bottom corner */}
+        <div className="absolute bottom-10 right-6 md:right-12 z-30 font-mono text-xs text-muted-foreground flex items-center gap-2 select-none">
+          <span className="text-white font-semibold">0{activeCardIndex + 1}</span>
+          <span className="w-8 h-px bg-white/20" />
+          <span>0{SHIPPED_ITEMS.length}</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ---------- Services ---------- */
 function Services() {
   return (
@@ -1168,11 +1502,11 @@ function Contact() {
           <Reveal delay={0.15}>
             <div className="flex flex-wrap items-center gap-3 md:justify-end">
               <MagneticButton
-                href="mailto:hello@vintvate.com"
+                href="mailto:jhaderajat@gmail.com"
                 primary
                 data-cursor="Email"
               >
-                <Mail className="mr-2 h-4 w-4" /> hello@vintvate.com
+                <Mail className="mr-2 h-4 w-4" /> jhaderajat@gmail.com
               </MagneticButton>
               <MagneticButton
                 href="https://linkedin.com/in/rajat-jhade-5b928730a"
@@ -1218,7 +1552,7 @@ function Footer() {
           <a href="#" data-cursor="GitHub" className="hover:text-foreground">
             <Github className="h-4 w-4" />
           </a>
-          <a href="mailto:hello@vintvate.com" data-cursor="Email" className="hover:text-foreground">
+          <a href="mailto:jhaderajat@gmail.com" data-cursor="Email" className="hover:text-foreground">
             <Mail className="h-4 w-4" />
           </a>
         </div>
