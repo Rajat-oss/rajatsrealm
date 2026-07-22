@@ -25,6 +25,8 @@ import { SmoothScroll } from "@/components/SmoothScroll";
 
 import project1 from "@/assets/project-vintvate.png";
 import project2 from "@/assets/project-stackhouse.png";
+import projectMeow from "@/assets/project-meow.png";
+import projectPixelPilgrim from "@/assets/project-pixelpilgrim.jpg";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -51,30 +53,7 @@ const STACK = [
   "Docker",
 ];
 
-const PROJECTS = [
-  {
-    id: "01",
-    year: "2026",
-    title: "Vintvate Studio",
-    tag: "Web Studio · Founding",
-    desc: "A modern web studio building fast, conversion-focused websites and full-stack products for startups, creators, and growing businesses.",
-    stack: ["Next.js", "TypeScript", "Postgres", "Motion"],
-    img: project1,
-    href: "http://vintvate.vercel.app/",
-    accent: "from-emerald-glow/40 to-cyan-glow/20",
-  },
-  {
-    id: "02",
-    year: "2025",
-    title: "Stackhouse",
-    tag: "Developer Network · Founding",
-    desc: "Building Stackhouse, a curated community and career accelerator for serious developers and founders to connect, collaborate, and grow.",
-    stack: ["React", "Node.js", "TailwindCSS", "Supabase"],
-    img: project2,
-    href: "https://www.stackhouse.social/",
-    accent: "from-amber-glow/40 to-amber-glow/10",
-  },
-];
+
 
 const SHIPPED_ITEMS = [
   {
@@ -82,18 +61,28 @@ const SHIPPED_ITEMS = [
     tag: "Web Studio",
     desc: "A modern web studio building fast, conversion-focused websites.",
     img: project1,
+    href: "http://vintvate.vercel.app/",
   },
   {
     title: "Stackhouse",
     tag: "Developer Network",
     desc: "A curated community and career accelerator for serious developers.",
     img: project2,
+    href: "https://www.stackhouse.social/",
   },
   {
-    title: "Nexus Dashboard",
-    tag: "Internal Tool",
-    desc: "A comprehensive analytics dashboard for managing user metrics.",
-    img: project1,
+    title: "Pixel Pilgrim",
+    tag: "Gaming Hub",
+    desc: "The ultimate hub to track, discover, and share your gaming journey — all in one beautiful place.",
+    img: projectPixelPilgrim,
+    href: "http://pixelpilgrim.tech/",
+  },
+  {
+    title: "MEOW",
+    tag: "Community Platform",
+    desc: "Host events, collect RSVPs, spark conversations, and turn moments into movements.",
+    img: projectMeow,
+    href: "https://meow-lac-chi.vercel.app/",
   },
 ];
 
@@ -127,7 +116,7 @@ const EXPERIENCE = [
   },
   {
     when: "Dec 2025 — May 2026",
-    role: "Full-stack Developer",
+    role: "Software Developer",
     org: "CodeWebX",
     where: "Remote",
     text: "Developed and maintained full-stack web applications, collaborating with the team to ship features.",
@@ -163,8 +152,8 @@ function Portfolio() {
       <About />
       <Experience />
       <Skills />
-      <Projects />
       <Shipped />
+      <Designs />
       <Services />
       <Philosophy />
       <Contact />
@@ -205,7 +194,8 @@ function Nav() {
     return () => window.removeEventListener("scroll", on);
   }, []);
   const items = [
-    ["Work", "#work"],
+    ["Work", "#shipped"],
+    ["Designs", "#designs"],
     ["About", "#about"],
     ["Stack", "#stack"],
     ["Services", "#services"],
@@ -453,7 +443,7 @@ function About() {
         <Reveal>
           <div className="space-y-6 text-lg leading-relaxed text-muted-foreground md:text-xl">
             <p>
-              I'm <span className="text-foreground">Rajat Jhade</span> — a full-stack developer
+              I'm <span className="text-foreground">Rajat Jhade</span> — a Software Developer
               based in Bhopal, currently building <span className="text-foreground">Vintvate</span>,
               a studio helping startups and creators turn ideas into scalable digital products.
             </p>
@@ -1039,83 +1029,7 @@ function Skills() {
   );
 }
 
-/* ---------- Projects ---------- */
-function Projects() {
-  return (
-    <Section id="work" eyebrow="Selected work" title="Things I've shipped." wide>
-      <div className="grid gap-6 md:grid-cols-2">
-        {PROJECTS.map((p, i) => (
-          <ProjectCard key={p.id} p={p} idx={i} />
-        ))}
-      </div>
-      <Reveal delay={0.2}>
-        <div className="mt-14 flex justify-center">
-          <MagneticButton href="#" data-cursor="Show more">
-            Show more <ArrowUpRight className="ml-2 inline h-4 w-4" />
-          </MagneticButton>
-        </div>
-      </Reveal>
-    </Section>
-  );
-}
 
-function ProjectCard({ p, idx }: { p: (typeof PROJECTS)[number]; idx: number }) {
-  return (
-    <Reveal delay={idx * 0.1}>
-      <a
-        href={p.href}
-        target="_blank"
-        rel="noreferrer"
-        data-cursor="View"
-        className="group block glass rounded-[2rem] overflow-hidden border border-white/5 bg-white/[0.01] hover:border-white/10 hover:bg-white/[0.02] transition duration-500 hover:shadow-elevated"
-      >
-        {/* Image Container with zoom aspect ratio */}
-        <div className="relative overflow-hidden aspect-[1.6/1]">
-          <div className={`absolute inset-0 z-10 bg-gradient-to-tr ${p.accent} opacity-40 mix-blend-overlay`} />
-          <img
-            src={p.img}
-            alt={p.title}
-            loading="lazy"
-            width={1280}
-            height={800}
-            className="w-full h-full object-cover transition-transform duration-[1000ms] ease-out group-hover:scale-[1.04]"
-          />
-          <div className="absolute inset-x-0 bottom-0 z-20 flex items-center justify-between p-4 text-[10px] md:text-xs uppercase tracking-widest text-white/90">
-            <span className="font-mono bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/5">{p.tag}</span>
-            <span className="font-mono bg-black/40 backdrop-blur-md p-1.5 rounded-full border border-white/5 flex items-center justify-center">
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </span>
-          </div>
-        </div>
-
-        {/* Content details */}
-        <div className="p-6 md:p-8">
-          <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-            <span>{p.id}</span>
-            <span className="h-px w-6 bg-white/20" />
-            <span>{p.year}</span>
-          </div>
-          <h3 className="mt-3 font-display text-2xl font-semibold leading-tight text-foreground transition group-hover:text-primary">
-            {p.title}
-          </h3>
-          <p className="mt-3 text-sm text-muted-foreground leading-relaxed line-clamp-2">
-            {p.desc}
-          </p>
-          <div className="mt-5 flex flex-wrap gap-1.5">
-            {p.stack.map((s) => (
-              <span
-                key={s}
-                className="rounded-full border border-white/5 bg-white/[0.02] px-2.5 py-0.5 text-[10px] font-mono text-muted-foreground group-hover:text-foreground group-hover:border-white/10 transition duration-300"
-              >
-                {s}
-              </span>
-            ))}
-          </div>
-        </div>
-      </a>
-    </Reveal>
-  );
-}
 
 /* ---------- Shipped ---------- */
 interface ShippedCardProps {
@@ -1125,11 +1039,12 @@ interface ShippedCardProps {
   angleStep: number;
   yStep: number;
   innerRef: (el: HTMLDivElement | null) => void;
+  onSelect: () => void;
 }
 
-function ShippedCard({ item, idx, isActive, angleStep, yStep, innerRef }: ShippedCardProps) {
+function ShippedCard({ item, idx, isActive, angleStep, yStep, innerRef, onSelect }: ShippedCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
-  
+
   // Motion values for local 3D tilt (hover)
   const rotateX = useMotionValue(0);
   const rotateY = useMotionValue(0);
@@ -1185,16 +1100,21 @@ function ShippedCard({ item, idx, isActive, angleStep, yStep, innerRef }: Shippe
         }}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className={`shipped-card-inner w-[88vw] max-w-[480px] h-[380px] md:h-[430px] rounded-[2rem] overflow-hidden border bg-black/60 relative group transition-colors duration-500 flex flex-col justify-between p-6 md:p-8 ${
-          isActive 
-            ? "border-white/20 shadow-[0_30px_100px_rgba(0,0,0,0.8)] cursor-grab active:cursor-grabbing" 
+        onClick={() => {
+          if (isActive) {
+            onSelect();
+          }
+        }}
+        className={`shipped-card-inner w-[88vw] max-w-[480px] h-[380px] md:h-[430px] rounded-[2rem] overflow-hidden border bg-black/60 relative group transition-colors duration-500 flex flex-col justify-between p-6 md:p-8 ${isActive
+            ? "border-white/20 shadow-[0_30px_100px_rgba(0,0,0,0.8)] cursor-pointer"
             : "border-white/5 pointer-events-none"
-        }`}
+          }`}
         style={{
           rotateX: rX,
           rotateY: rY,
           transformStyle: "preserve-3d",
         }}
+        data-cursor={isActive ? "Click for info" : undefined}
       >
         {/* Holographic light refraction following mouse */}
         {isActive && (
@@ -1210,20 +1130,20 @@ function ShippedCard({ item, idx, isActive, angleStep, yStep, innerRef }: Shippe
         <div className="absolute inset-0 bg-gradient-to-b from-white/[0.04] to-transparent pointer-events-none z-10" />
 
         {/* Background Image with depth translation */}
-        <div 
+        <div
           className="absolute inset-0 overflow-hidden z-0"
           style={{ transform: "translateZ(-20px)" }}
         >
           <div className="absolute inset-0 bg-black/50 z-10 transition-colors duration-700" />
-          <img 
-            src={item.img} 
-            alt={item.title} 
-            className="absolute inset-0 w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-[2s] ease-out opacity-85" 
+          <img
+            src={item.img}
+            alt={item.title}
+            className="absolute inset-0 w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-[2s] ease-out opacity-85"
           />
         </div>
-        
+
         {/* Card Header (Tag) */}
-        <div 
+        <div
           className="self-end relative z-20"
           style={{ transform: "translateZ(30px)" }}
         >
@@ -1233,22 +1153,17 @@ function ShippedCard({ item, idx, isActive, angleStep, yStep, innerRef }: Shippe
           </div>
         </div>
 
-        {/* Card Footer (Title & Description & Button) */}
-        <div 
-          className="relative z-20 flex flex-col items-start gap-4 w-full"
-          style={{ transform: "translateZ(50px)" }}
+        {/* Initial teaser overlay */}
+        <div
+          className="relative z-20 w-full bg-black/40 backdrop-blur-md p-5 rounded-2xl border border-white/5 transition-opacity duration-300 group-hover:bg-black/60"
+          style={{ transform: "translateZ(40px)" }}
         >
-          <div className="bg-black/50 backdrop-blur-md p-5 rounded-2xl border border-white/10 w-full">
-            <h3 className="font-display text-xl md:text-2xl font-bold text-white mb-2 leading-tight tracking-tight">
-              {item.title}
-            </h3>
-            <p className="text-white/70 text-xs md:text-sm leading-relaxed mb-4">
-              {item.desc}
-            </p>
-            <MagneticButton href="#" data-cursor="Explore">
-              View Project <ArrowUpRight className="ml-2 inline h-4 w-4" />
-            </MagneticButton>
-          </div>
+          <h3 className="font-display text-lg md:text-xl font-bold text-white mb-1 leading-tight tracking-tight">
+            {item.title}
+          </h3>
+          <span className="text-[10px] font-mono text-muted-foreground/60 flex items-center gap-1">
+            Click to view details
+          </span>
         </div>
       </motion.div>
     </div>
@@ -1260,6 +1175,7 @@ function Shipped() {
   const cylinderRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [activeCardIndex, setActiveCardIndex] = useState(0);
+  const [selectedItem, setSelectedItem] = useState<typeof SHIPPED_ITEMS[number] | null>(null);
 
   const angleStep = 80; // separation angle for cards (helical spacing)
   const yStep = 200;    // vertical offset separating cards
@@ -1303,49 +1219,59 @@ function Shipped() {
       }
     });
 
-    // 1. Rotate and translate the cylinder structure continuously from 0 to 1
+    // 1. Rotate and translate the cylinder structure continuously with a custom dwell ease that slows down at center points
     tl.to(cylinder, {
       rotationY: -(total - 1) * angleStep,
       y: -(total - 1) * yStep,
-      ease: "none",
+      ease: (p) => {
+        if (p <= 0) return 0;
+        if (p >= 1) return 1;
+        const x = p * (total - 1);
+        const i = Math.floor(x);
+        const f = x - i;
+        // Smoothstep interpolation (3f^2 - 2f^3) to create flat velocity near integer positions (cards in center)
+        const smooth = f * f * (3 - 2 * f);
+        return (i + smooth) / (total - 1);
+      },
       duration: 1.0,
     }, 0);
 
-    // 2. Animate card opacity/scale transitions continuously using only .to() tweens (prevents fromTo glitches)
+    // 2. Animate card opacity/scale transitions dynamically based on total projects count
+    const step = 1 / (total - 1);
     SHIPPED_ITEMS.forEach((_, idx) => {
       const card = cards[idx];
       if (!card) return;
 
       if (idx === 0) {
-        // First card starts at 1.0, fades out from progress 0 to 0.5
+        // First card starts active, fades out
         tl.to(card, {
           opacity: 0.25,
           scale: 0.85,
           ease: "sine.inOut",
-          duration: 0.5,
+          duration: step,
         }, 0);
       } else if (idx === total - 1) {
-        // Last card starts at 0.25, fades in from progress 0.5 to 1.0
+        // Last card starts inactive, fades in at the end
         tl.to(card, {
           opacity: 1,
           scale: 1.05,
           ease: "sine.inOut",
-          duration: 0.5,
-        }, 0.5);
+          duration: step,
+        }, (idx - 1) * step);
       } else {
-        // Middle card starts at 0.25, fades in from 0 to 0.5, then fades out from 0.5 to 1.0
+        // Middle cards fade in, stay active, then fade out
         tl.to(card, {
           opacity: 1,
           scale: 1.05,
           ease: "sine.inOut",
-          duration: 0.5,
-        }, 0);
+          duration: step,
+        }, (idx - 1) * step);
         tl.to(card, {
           opacity: 0.25,
           scale: 0.85,
           ease: "sine.inOut",
-          duration: 0.5,
-        }, 0.5);
+          duration: step,
+        }, idx * step);
       }
     });
 
@@ -1353,6 +1279,10 @@ function Shipped() {
       tl.kill();
     };
   }, []);
+
+  useEffect(() => {
+    setSelectedItem(null);
+  }, [activeCardIndex]);
 
   return (
     <section ref={containerRef} id="shipped" className="relative bg-black w-full h-[300vh]">
@@ -1373,14 +1303,14 @@ function Shipped() {
       `}</style>
 
       {/* Background Radial Gradient */}
-      <div 
-        className="absolute inset-0 z-0 pointer-events-none opacity-20 mix-blend-overlay" 
-        style={{ background: "radial-gradient(circle at 50% 50%, var(--primary) 0%, transparent 60%)" }} 
+      <div
+        className="absolute inset-0 z-0 pointer-events-none opacity-20 mix-blend-overlay"
+        style={{ background: "radial-gradient(circle at 50% 50%, var(--primary) 0%, transparent 60%)" }}
       />
-      
+
       {/* Sticky Stage Wrapper */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center items-center helix-stage [perspective:1200px]">
-        
+
         {/* Float-in Section Header */}
         <div className="absolute top-10 left-6 md:left-12 z-30 pointer-events-none select-none">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-3">
@@ -1414,6 +1344,7 @@ function Shipped() {
               innerRef={(el) => {
                 cardRefs.current[idx] = el;
               }}
+              onSelect={() => setSelectedItem(item)}
             />
           ))}
         </div>
@@ -1425,7 +1356,152 @@ function Shipped() {
           <span>0{SHIPPED_ITEMS.length}</span>
         </div>
       </div>
+
+      {/* Full Page Backdrop blur overlay */}
+      {selectedItem && (
+        <div
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md transition-opacity duration-300"
+          onClick={() => setSelectedItem(null)}
+        />
+      )}
+
+      {/* Full Page/Screen Drawer (Curved Top Details Box) */}
+      <motion.div
+        initial={{ y: "100%", x: "-50%" }}
+        animate={{ y: selectedItem ? "0%" : "100%", x: "-50%" }}
+        transition={{ type: "spring", damping: 25, stiffness: 180 }}
+        className="fixed bottom-0 left-1/2 z-[60] bg-black/95 border-t border-x border-white/10 rounded-t-[2.5rem] shadow-2xl flex flex-col min-h-[70vh] md:min-h-[75vh] max-h-[90vh] overflow-hidden w-[98vw] max-w-[1300px]"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Full-bleed background image container */}
+        {selectedItem && (
+          <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+            {/* Dark gradient overlay to ensure text readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/20 z-10" />
+            <motion.img
+              initial={{ scale: 1.1, opacity: 0 }}
+              animate={{ scale: 1, opacity: 0.65 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              src={selectedItem.img}
+              alt={selectedItem.title}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        )}
+
+        <div className="relative z-10 max-w-6xl mx-auto w-full flex flex-col h-full justify-between gap-6 md:gap-8 p-8 md:p-12">
+          
+          <div className="my-auto max-w-3xl">
+            {/* Frosted Glass Content Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
+              className="glass p-8 md:p-12 rounded-[2rem] border border-white/10 bg-black/50 backdrop-blur-md space-y-6"
+            >
+              <span className="font-mono text-xs uppercase tracking-widest text-primary font-semibold block">
+                {selectedItem?.tag}
+              </span>
+              
+              <h2 className="font-display text-3xl md:text-6xl font-extrabold text-white leading-none uppercase tracking-tight">
+                {selectedItem?.title}
+              </h2>
+
+              <p className="text-white/80 text-base md:text-lg leading-relaxed">
+                {selectedItem?.desc}
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <MagneticButton
+                  href={selectedItem?.href || "#"}
+                  target={selectedItem?.href ? "_blank" : undefined}
+                  rel={selectedItem?.href ? "noopener noreferrer" : undefined}
+                  data-cursor="Explore"
+                  primary
+                  className="px-8 py-4 justify-center"
+                >
+                  View Live Website <ArrowUpRight className="ml-2 inline h-4 w-4" />
+                </MagneticButton>
+                <button
+                  onClick={() => setSelectedItem(null)}
+                  className="px-6 py-4 rounded-full border border-white/10 text-white text-sm font-medium hover:bg-white/5 transition-colors cursor-pointer"
+                >
+                  Close Details
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </motion.div>
     </section>
+  );
+}
+
+/* ---------- Designs ---------- */
+const CREATIVE_DESIGNS = [
+  {
+    title: "Arc Dezine",
+    tag: "3D Architecture Portfolio",
+    desc: "An immersive digital experience showcasing premium architecture and design concepts with smooth interaction models and high-end typography.",
+    url: "https://arc-dezine02.vercel.app/",
+  }
+];
+
+function Designs() {
+  return (
+    <Section id="designs" eyebrow="Creative Lab" title="Designs I've crafted." wide>
+      <div className="space-y-20">
+        {CREATIVE_DESIGNS.map((design, i) => (
+          <Reveal key={design.url} delay={i * 0.1}>
+            <div className="glass group relative overflow-hidden rounded-[2.5rem] border border-white/5 bg-white/[0.01] p-6 md:p-12 transition duration-500 hover:border-white/10">
+              <div className="grid gap-10 lg:grid-cols-[1fr_2fr] items-center">
+                {/* Left side details */}
+                <div className="space-y-6">
+                  <span className="font-mono text-xs uppercase tracking-widest text-primary font-semibold">
+                    {design.tag}
+                  </span>
+                  <h3 className="font-display text-3xl md:text-5xl font-bold text-foreground leading-tight">
+                    {design.title}
+                  </h3>
+                  <p className="text-muted-foreground text-sm md:text-base leading-relaxed">
+                    {design.desc}
+                  </p>
+                  <div className="flex gap-4">
+                    <MagneticButton href={design.url} target="_blank" rel="noopener noreferrer" primary>
+                      Launch Live Site <ArrowUpRight className="ml-2 h-4 w-4" />
+                    </MagneticButton>
+                  </div>
+                </div>
+
+                {/* Right side live preview mockup */}
+                <div className="relative aspect-[16/10] w-full rounded-2xl border border-white/10 bg-black overflow-hidden shadow-2xl group">
+                  {/* Browser frame decoration */}
+                  <div className="flex items-center gap-1.5 bg-neutral-900 px-4 py-3 border-b border-b-white/5">
+                    <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
+                    <div className="ml-4 bg-white/5 text-[10px] text-muted-foreground/60 px-3 py-1 rounded-md w-1/2 truncate font-mono">
+                      {design.url}
+                    </div>
+                  </div>
+
+                  {/* Iframe Wrapper to hide scrollbar */}
+                  <div className="w-full h-[calc(100%-38px)] overflow-hidden relative">
+                    <iframe
+                      src={design.url}
+                      title={design.title}
+                      className="w-[calc(100%+20px)] h-full border-0 absolute left-0 top-0"
+                      loading="lazy"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </Section>
   );
 }
 
