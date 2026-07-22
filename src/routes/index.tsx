@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
@@ -142,12 +142,13 @@ const SERVICES = [
 ];
 
 function Portfolio() {
+  const [isContactOpen, setIsContactOpen] = useState(false);
   return (
     <div className="dark relative min-h-screen overflow-x-clip bg-background text-foreground">
       <SmoothScroll />
       <CustomCursor />
       <BackgroundFX />
-      <Nav />
+      <Nav onOpenContact={() => setIsContactOpen(true)} />
       <Hero />
       <About />
       <Experience />
@@ -158,6 +159,7 @@ function Portfolio() {
       <Philosophy />
       <Contact />
       <Footer />
+      <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
     </div>
   );
 }
@@ -185,17 +187,171 @@ function BackgroundFX() {
 }
 
 /* ---------- Nav ---------- */
-function Nav() {
+interface NavProps {
+  onOpenContact: () => void;
+}
+
+function Nav({ onOpenContact }: NavProps) {
   return (
     <div className="fixed top-6 right-12 md:top-8 md:right-16 z-50">
-      <a
-        href="#contact"
+      <button
+        onClick={onOpenContact}
         data-cursor="Let's talk"
-        className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-neutral-400 via-neutral-300 to-neutral-900 text-black hover:from-neutral-900 hover:via-neutral-800 hover:to-neutral-400 hover:text-white px-5 py-2.5 text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-500"
+        className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-neutral-400 via-neutral-300 to-neutral-900 text-black hover:from-neutral-900 hover:via-neutral-800 hover:to-neutral-400 hover:text-white px-5 py-2.5 text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-500 cursor-pointer"
       >
         Let's Talk <ArrowUpRight className="h-3.5 w-3.5" />
-      </a>
+      </button>
     </div>
+  );
+}
+
+/* ---------- Contact Modal ---------- */
+interface ContactModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+function ContactModal({ isOpen, onClose }: ContactModalProps) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [idea, setIdea] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setSubmitted(true);
+      setTimeout(() => {
+        setSubmitted(false);
+        setName("");
+        setEmail("");
+        setIdea("");
+        onClose();
+      }, 2000);
+    }, 1500);
+  };
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-md"
+          />
+
+          {/* Modal Container */}
+          <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 pointer-events-none">
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              transition={{ type: "spring", duration: 0.5 }}
+              className="w-full max-w-xl bg-black/90 border border-white/10 rounded-[2.5rem] p-8 md:p-10 shadow-2xl relative pointer-events-auto overflow-hidden"
+            >
+              {/* Decorative background glows */}
+              <div className="absolute top-0 right-0 w-40 h-40 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute bottom-0 left-0 w-40 h-40 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
+
+              {/* Close Button */}
+              <button
+                onClick={onClose}
+                className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors cursor-pointer p-2 rounded-full hover:bg-white/5"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+
+              {submitted ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex flex-col items-center justify-center py-12 text-center"
+                >
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center border border-primary/20 mb-6 text-primary animate-pulse">
+                    <Zap className="w-8 h-8" />
+                  </div>
+                  <h3 className="font-display text-2xl font-bold text-white mb-2">Message Sent!</h3>
+                  <p className="text-white/60 text-sm">I'll get back to you as soon as possible.</p>
+                </motion.div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
+                  <div className="space-y-2">
+                    <h3 className="font-display text-2xl md:text-3xl font-bold text-white">Let's craft something real.</h3>
+                    <p className="text-white/50 text-sm">Have an idea? Fill out the details below and let's align.</p>
+                  </div>
+
+                  <div className="space-y-6">
+                    {/* Field 1: Name */}
+                    <div className="space-y-2">
+                      <label className="block text-xs font-mono uppercase tracking-widest text-white font-semibold">
+                        How should I address you?
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Your name"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-primary/50 transition-colors"
+                      />
+                    </div>
+
+                    {/* Field 2: Email */}
+                    <div className="space-y-2">
+                      <label className="block text-xs font-mono uppercase tracking-widest text-white font-semibold">
+                        Where can I reply to?
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Your email address"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-primary/50 transition-colors"
+                      />
+                    </div>
+
+                    {/* Field 3: Idea */}
+                    <div className="space-y-2">
+                      <label className="block text-xs font-mono uppercase tracking-widest text-white font-semibold">
+                        Tell me about the idea...
+                      </label>
+                      <textarea
+                        required
+                        value={idea}
+                        onChange={(e) => setIdea(e.target.value)}
+                        placeholder="Describe your project, timeline, or goals"
+                        rows={4}
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-primary/50 transition-colors resize-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4 pt-2">
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="flex-1 bg-gradient-to-r from-neutral-400 via-neutral-300 to-neutral-900 text-black hover:from-neutral-900 hover:via-neutral-800 hover:to-neutral-400 hover:text-white font-semibold py-3.5 px-6 rounded-xl transition-all duration-500 shadow-lg cursor-pointer flex items-center justify-center gap-2"
+                    >
+                      {isSubmitting ? "Sending..." : <>Send Message <ArrowUpRight className="w-4 h-4" /></>}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </motion.div>
+          </div>
+        </>
+      )}
+    </AnimatePresence>
   );
 }
 
