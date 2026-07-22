@@ -186,64 +186,16 @@ function BackgroundFX() {
 
 /* ---------- Nav ---------- */
 function Nav() {
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    const on = () => setScrolled(window.scrollY > 40);
-    on();
-    window.addEventListener("scroll", on, { passive: true });
-    return () => window.removeEventListener("scroll", on);
-  }, []);
-  const items = [
-    ["Work", "#shipped"],
-    ["Designs", "#designs"],
-    ["About", "#about"],
-    ["Stack", "#stack"],
-    ["Services", "#services"],
-    ["Contact", "#contact"],
-  ];
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4 transition-all duration-500 ${scrolled ? "pt-3" : "pt-6"
-        }`}
-    >
-      <nav
-        className={`glass flex items-center gap-2 rounded-full px-3 py-2 transition-all duration-500 ${scrolled ? "shadow-elevated" : ""
-          }`}
+    <div className="fixed top-6 right-12 md:top-8 md:right-16 z-50">
+      <a
+        href="#contact"
+        data-cursor="Let's talk"
+        className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-neutral-400 via-neutral-300 to-neutral-900 text-black hover:from-neutral-900 hover:via-neutral-800 hover:to-neutral-400 hover:text-white px-5 py-2.5 text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-500"
       >
-        <a
-          href="#top"
-          data-cursor="Home"
-          className="flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
-          </span>
-          <span className="font-display font-semibold">Rajat.</span>
-        </a>
-        <span className="mx-1 hidden h-4 w-px bg-white/10 md:block" />
-        <ul className="hidden items-center md:flex">
-          {items.map(([label, href]) => (
-            <li key={href}>
-              <a
-                href={href}
-                data-cursor="Go"
-                className="rounded-full px-3 py-1.5 text-sm text-muted-foreground transition hover:bg-white/5 hover:text-foreground"
-              >
-                {label}
-              </a>
-            </li>
-          ))}
-        </ul>
-        <a
-          href="#contact"
-          data-cursor="Let's talk"
-          className="ml-1 inline-flex items-center gap-1.5 rounded-full bg-primary px-3.5 py-1.5 text-sm font-medium text-primary-foreground transition hover:brightness-110"
-        >
-          Hire me <ArrowUpRight className="h-3.5 w-3.5" />
-        </a>
-      </nav>
-    </header>
+        Let's Talk <ArrowUpRight className="h-3.5 w-3.5" />
+      </a>
+    </div>
   );
 }
 
@@ -1106,8 +1058,8 @@ function ShippedCard({ item, idx, isActive, angleStep, yStep, innerRef, onSelect
           }
         }}
         className={`shipped-card-inner w-[88vw] max-w-[480px] h-[380px] md:h-[430px] rounded-[2rem] overflow-hidden border bg-black/60 relative group transition-colors duration-500 flex flex-col justify-between p-6 md:p-8 ${isActive
-            ? "border-white/20 shadow-[0_30px_100px_rgba(0,0,0,0.8)] cursor-pointer"
-            : "border-white/5 pointer-events-none"
+          ? "border-white/20 shadow-[0_30px_100px_rgba(0,0,0,0.8)] cursor-pointer"
+          : "border-white/5 pointer-events-none"
           }`}
         style={{
           rotateX: rX,
@@ -1377,7 +1329,7 @@ function Shipped() {
         {selectedItem && (
           <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
             {/* Dark gradient overlay to ensure text readability */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/20 z-10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/35 z-10" />
             <motion.img
               initial={{ scale: 1.1, opacity: 0 }}
               animate={{ scale: 1, opacity: 0.65 }}
@@ -1389,46 +1341,96 @@ function Shipped() {
           </div>
         )}
 
-        <div className="relative z-10 max-w-6xl mx-auto w-full flex flex-col h-full justify-between gap-6 md:gap-8 p-8 md:p-12">
-          
-          <div className="my-auto max-w-3xl">
-            {/* Frosted Glass Content Card */}
+        {/* Absolute-positioned close button at top-right */}
+        <button
+          onClick={() => setSelectedItem(null)}
+          className="absolute top-6 right-6 md:top-8 md:right-8 z-30 text-white/60 hover:text-white p-3 rounded-full bg-black/40 hover:bg-black/80 border border-white/10 hover:border-white/20 transition-all flex items-center justify-center cursor-pointer shadow-lg"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        <div className="relative z-10 max-w-6xl mx-auto w-full flex flex-col h-full justify-center items-center p-8 md:p-16">
+          <div className="w-full max-w-3xl text-center space-y-8 select-none flex flex-col items-center">
+
+            {/* Top Accent Line */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
-              className="glass p-8 md:p-12 rounded-[2rem] border border-white/10 bg-black/50 backdrop-blur-md space-y-6"
-            >
-              <span className="font-mono text-xs uppercase tracking-widest text-primary font-semibold block">
-                {selectedItem?.tag}
-              </span>
-              
-              <h2 className="font-display text-3xl md:text-6xl font-extrabold text-white leading-none uppercase tracking-tight">
-                {selectedItem?.title}
-              </h2>
+              initial={{ scaleX: 0 }}
+              animate={selectedItem ? { scaleX: 1 } : { scaleX: 0 }}
+              transition={{ duration: 0.8, ease: "circOut" }}
+              className="w-full h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent origin-center"
+            />
 
-              <p className="text-white/80 text-base md:text-lg leading-relaxed">
-                {selectedItem?.desc}
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <MagneticButton
-                  href={selectedItem?.href || "#"}
-                  target={selectedItem?.href ? "_blank" : undefined}
-                  rel={selectedItem?.href ? "noopener noreferrer" : undefined}
-                  data-cursor="Explore"
-                  primary
-                  className="px-8 py-4 justify-center"
+            <div className="space-y-4">
+              {/* Tag */}
+              <div className="overflow-hidden">
+                <motion.span
+                  initial={{ y: "100%", opacity: 0 }}
+                  animate={selectedItem ? { y: "0%", opacity: 1 } : { y: "100%", opacity: 0 }}
+                  transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+                  className="font-mono text-xs md:text-sm uppercase tracking-[0.4em] text-primary font-bold block"
                 >
-                  View Live Website <ArrowUpRight className="ml-2 inline h-4 w-4" />
-                </MagneticButton>
-                <button
-                  onClick={() => setSelectedItem(null)}
-                  className="px-6 py-4 rounded-full border border-white/10 text-white text-sm font-medium hover:bg-white/5 transition-colors cursor-pointer"
-                >
-                  Close Details
-                </button>
+                  {selectedItem?.tag}
+                </motion.span>
               </div>
+
+              {/* Title */}
+              <div className="overflow-hidden py-2">
+                <motion.h2
+                  initial={{ y: "110%", opacity: 0 }}
+                  animate={selectedItem ? { y: "0%", opacity: 1 } : { y: "110%", opacity: 0 }}
+                  transition={{ duration: 0.7, ease: "circOut", delay: 0.3 }}
+                  className="font-display text-4xl md:text-7xl font-extrabold text-white leading-none uppercase tracking-wider filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]"
+                >
+                  {selectedItem?.title}
+                </motion.h2>
+              </div>
+            </div>
+
+            {/* Bottom Accent Line */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={selectedItem ? { scaleX: 1 } : { scaleX: 0 }}
+              transition={{ duration: 0.8, ease: "circOut", delay: 0.1 }}
+              className="w-full h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent origin-center"
+            />
+
+            {/* Description */}
+            <div className="overflow-hidden">
+              <motion.p
+                initial={{ y: 20, opacity: 0 }}
+                animate={selectedItem ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
+                transition={{ duration: 0.7, ease: "easeOut", delay: 0.4 }}
+                className="text-white/90 text-base md:text-xl font-medium leading-relaxed max-w-2xl text-center filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] font-sans"
+              >
+                {selectedItem?.desc}
+              </motion.p>
+            </div>
+
+            {/* CTA Buttons */}
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={selectedItem ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
+              className="flex flex-col sm:flex-row gap-4 pt-4 justify-center items-center w-full"
+            >
+              <MagneticButton
+                href={selectedItem?.href || "#"}
+                target={selectedItem?.href ? "_blank" : undefined}
+                rel={selectedItem?.href ? "noopener noreferrer" : undefined}
+                data-cursor="Explore"
+                primary
+                className="px-8 py-4 justify-center shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)] hover:shadow-[0_0_30px_rgba(var(--primary-rgb),0.6)] transition-shadow duration-300"
+              >
+                Launch Project <ArrowUpRight className="ml-2 inline h-4 w-4" />
+              </MagneticButton>
+              <button
+                onClick={() => setSelectedItem(null)}
+                className="px-6 py-4 rounded-full border border-white/20 text-white text-sm font-medium hover:bg-white/5 transition-all duration-300 cursor-pointer backdrop-blur-md hover:border-white/40"
+              >
+                Close Details
+              </button>
             </motion.div>
           </div>
         </div>
