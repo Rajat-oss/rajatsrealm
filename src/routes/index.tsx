@@ -2700,45 +2700,88 @@ function KononenkoSequence() {
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: "+=540%",
+          end: "+=680%",
           pin: true,
-          scrub: 0.8,
+          scrub: 1.5, // Ultra-smooth, extra slow scrubbing
           anticipatePin: 1,
         },
       });
 
       // ----------------------------------------------------
-      // PHASE 1: 360-Degree Telemetry HUD Ring Rotation & Fade Out
+      // PHASE 1: 1 Full 360° Rotation + Slow Smooth White Background Transition
       // ----------------------------------------------------
       if (hudRingRef.current) {
+        // 1 full 360-degree rotation
         tl.to(hudRingRef.current, {
           rotate: 360,
-          scale: 1.35,
-          opacity: 0,
-          duration: 1.5,
-          ease: "power2.inOut",
+          duration: 6.0,
+          ease: "none",
         });
       }
 
+      // Smooth background color transformation from dark (#060608) to pure white (#ffffff)
+      if (sectionRef.current) {
+        tl.to(sectionRef.current, {
+          backgroundColor: "#ffffff",
+          duration: 6.0,
+          ease: "none",
+        }, "<");
+      }
+
+      // Smooth color inversion for SVG radial lines, labels, and central headline text
+      const svgLines = hudRingRef.current?.querySelectorAll("line");
+      if (svgLines && svgLines.length > 0) {
+        tl.to(svgLines, {
+          stroke: "rgba(0, 0, 0, 0.25)",
+          duration: 6.0,
+          ease: "none",
+        }, "<");
+      }
+
+      const svgTexts = hudRingRef.current?.querySelectorAll("text");
+      if (svgTexts && svgTexts.length > 0) {
+        tl.to(svgTexts, {
+          fill: "rgba(0, 0, 0, 0.75)",
+          duration: 6.0,
+          ease: "none",
+        }, "<");
+      }
+
+      const headlineH2 = phase1Ref.current?.querySelector("h2");
+      if (headlineH2) {
+        tl.to(headlineH2, {
+          color: "#000000",
+          duration: 6.0,
+          ease: "none",
+        }, "<");
+      }
+
+      const headlineH3 = phase1Ref.current?.querySelector("h3");
+      if (headlineH3) {
+        tl.to(headlineH3, {
+          color: "rgba(0, 0, 0, 0.55)",
+          duration: 6.0,
+          ease: "none",
+        }, "<");
+      }
+
+      // PHASE 1 Fade Out (Fades out smoothly after 1 rotation + white background transformation completes)
       tl.to(phase1Ref.current, {
-        scale: 1.25,
+        scale: 1.15,
         opacity: 0,
         filter: "blur(10px)",
-        duration: 1.5,
+        duration: 1.2,
         ease: "power2.inOut",
-      }, "<");
-
-      // Hold Phase 1 (radial lines + "Currently Obsessed With") for 2 scroll cycles
-      tl.to({}, { duration: 3.0, ease: "none" });
+      });
 
       // ----------------------------------------------------
-      // PHASE 2: Precision Line-by-Line Headline Mask Reveal (Starts AFTER 2-cycle hold)
+      // PHASE 2 (Scroll 3): Precision Line-by-Line Headline Mask Reveal ("a studio shaped by...")
       // ----------------------------------------------------
       tl.to(headlinePhase2Ref.current, {
         opacity: 1,
         duration: 0.4,
         ease: "none",
-      }, ">");
+      }, "<");
 
       const headlineLines = headlinePhase2Ref.current?.querySelectorAll(".line-item");
       if (headlineLines) {
@@ -2944,22 +2987,22 @@ function KononenkoSequence() {
             {/* Header Badge & Interactive Interest Filter Pills */}
             <div className="flex flex-wrap items-center gap-3 pointer-events-auto">
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-                <span className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/70 font-bold">
+                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                <span className="font-mono text-[10px] uppercase tracking-[0.35em] text-black/70 font-bold">
                   PEOPLE & PROCESS • HUD 02
                 </span>
               </div>
 
               {/* Micro Filter Pills */}
-              <div className="flex items-center gap-1.5 bg-black/60 backdrop-blur-md p-1 rounded-full border border-white/15 shadow-lg">
+              <div className="flex items-center gap-1.5 bg-black/5 backdrop-blur-md p-1 rounded-full border border-black/15 shadow-lg">
                 {filterTabs.map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => setActiveInterestFilter(tab.id)}
                     className={`px-2.5 py-0.5 rounded-full font-mono text-[8.5px] uppercase tracking-wider transition-all cursor-pointer ${
                       activeInterestFilter === tab.id
-                        ? "bg-white text-black font-extrabold shadow-md"
-                        : "text-white/60 hover:text-white hover:bg-white/10"
+                        ? "bg-black text-white font-extrabold shadow-md"
+                        : "text-black/60 hover:text-black hover:bg-black/10"
                     }`}
                   >
                     {tab.label}
@@ -2968,7 +3011,7 @@ function KononenkoSequence() {
               </div>
             </div>
 
-            <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl text-white font-normal leading-[1.04] tracking-tight">
+            <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl text-black font-normal leading-[1.04] tracking-tight">
               <div className="overflow-hidden pb-1">
                 <span className="line-item block">A studio shaped by</span>
               </div>
@@ -2979,7 +3022,7 @@ function KononenkoSequence() {
                 <span className="line-item block">collective pursuit of</span>
               </div>
               <div className="overflow-hidden pb-1">
-                <span className="line-item block italic text-amber-300 font-light">thoughtful design.</span>
+                <span className="line-item block italic text-amber-600 font-light">thoughtful design.</span>
               </div>
             </h2>
           </div>
