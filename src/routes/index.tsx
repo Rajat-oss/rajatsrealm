@@ -2700,7 +2700,7 @@ function KononenkoSequence() {
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: "+=380%",
+          end: "+=540%",
           pin: true,
           scrub: 0.8,
           anticipatePin: 1,
@@ -2728,8 +2728,11 @@ function KononenkoSequence() {
         ease: "power2.inOut",
       }, "<");
 
+      // Hold Phase 1 (radial lines + "Currently Obsessed With") for 2 scroll cycles
+      tl.to({}, { duration: 3.0, ease: "none" });
+
       // ----------------------------------------------------
-      // PHASE 2: Precision Line-by-Line Headline Mask Reveal (Starts AFTER Circle Rotation)
+      // PHASE 2: Precision Line-by-Line Headline Mask Reveal (Starts AFTER 2-cycle hold)
       // ----------------------------------------------------
       tl.to(headlinePhase2Ref.current, {
         opacity: 1,
@@ -2923,17 +2926,11 @@ function KononenkoSequence() {
 
           {/* Central Headline Statement */}
           <div className="text-center space-y-2 z-30 px-4">
-            <div className="flex items-center justify-center gap-2 mb-3">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-              <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-white/60">
-                KONONENKO BUREAU • SUB-ZERO TELEMETRY
-              </span>
-            </div>
             <h2 className="font-serif text-5xl md:text-7xl lg:text-9xl tracking-tight leading-none text-white font-normal">
-              Refined & Bold
+              Currently
             </h2>
             <h3 className="font-serif text-4xl md:text-6xl lg:text-8xl tracking-tight leading-none text-white/60 italic font-light">
-              Essential
+              Obsessed With
             </h3>
           </div>
         </div>
