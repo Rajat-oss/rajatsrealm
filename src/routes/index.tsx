@@ -165,7 +165,6 @@ function Portfolio() {
       <Skills />
       <Shipped />
       <Designs />
-      <Interests />
       <KononenkoSequence />
       <Services />
       <Philosophy />
@@ -1324,7 +1323,7 @@ function Shipped() {
       }
     });
 
-    // Main scroll timeline - completely continuous & linear
+    // Main scroll timeline with a tight transition for the last card (04)
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: container,
@@ -1332,32 +1331,32 @@ function Shipped() {
         end: "bottom bottom",
         scrub: 0.8, // smooth scrubbing delay
         onUpdate: (self) => {
-          const rawIndex = self.progress * (total - 1);
+          const mappedP = Math.min(1, self.progress / 0.85);
+          const rawIndex = mappedP * (total - 1);
           const index = Math.round(rawIndex);
           setActiveCardIndex(index);
         }
       }
     });
 
-    // 1. Rotate and translate the cylinder structure continuously with a custom dwell ease that slows down at center points
+    // 1. Rotate and translate the cylinder structure, completing card 04 at 85% of section height
     tl.to(cylinder, {
       rotationY: -(total - 1) * angleStep,
       y: -(total - 1) * yStep,
       ease: (p) => {
         if (p <= 0) return 0;
-        if (p >= 1) return 1;
-        const x = p * (total - 1);
+        const mappedP = Math.min(1, p / 0.85);
+        const x = mappedP * (total - 1);
         const i = Math.floor(x);
         const f = x - i;
-        // Smoothstep interpolation (3f^2 - 2f^3) to create flat velocity near integer positions (cards in center)
         const smooth = f * f * (3 - 2 * f);
-        return (i + smooth) / (total - 1);
+        return Math.min(1, (i + smooth) / (total - 1));
       },
       duration: 1.0,
     }, 0);
 
-    // 2. Animate card opacity/scale transitions dynamically based on total projects count
-    const step = 1 / (total - 1);
+    // 2. Animate card opacity/scale transitions up to 85% of timeline
+    const step = 0.85 / (total - 1);
     SHIPPED_ITEMS.forEach((_, idx) => {
       const card = cards[idx];
       if (!card) return;
@@ -1371,7 +1370,7 @@ function Shipped() {
           duration: step,
         }, 0);
       } else if (idx === total - 1) {
-        // Last card starts inactive, fades in at the end
+        // Last card starts inactive, fades in and stays active for the remainder
         tl.to(card, {
           opacity: 1,
           scale: 1.05,
@@ -2701,7 +2700,7 @@ function KononenkoSequence() {
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: "+=500%",
+          end: "+=380%",
           pin: true,
           scrub: 0.8,
           anticipatePin: 1,
@@ -2792,7 +2791,7 @@ function KononenkoSequence() {
       }
 
       // ----------------------------------------------------
-      // PHASE 4: Sub-Zero Telemetry Manifesto Reveal & Dedicated Crisp Pin Hold
+      // PHASE 4: Sub-Zero Telemetry Manifesto Reveal (Stays visible until smooth section transition)
       // ----------------------------------------------------
       if (filmstripTrackRef.current) {
         tl.to(
@@ -2822,20 +2821,11 @@ function KononenkoSequence() {
           "-=0.8"
         );
 
-        // Dedicated crisp hold so user can comfortably read & interact with the Manifesto
+        // Holds clean until section unpins seamlessly into Services
         tl.to(holoCardRef.current, {
           scale: 1,
-          duration: 3.5,
+          duration: 2.5,
           ease: "none",
-        });
-
-        // Quick clean fade at very end of pin right as next section overlaps
-        tl.to(holoCardRef.current, {
-          opacity: 0,
-          scale: 0.95,
-          pointerEvents: "none",
-          duration: 0.6,
-          ease: "power1.out",
         });
       }
     }, section);
