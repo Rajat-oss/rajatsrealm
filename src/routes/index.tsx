@@ -2860,30 +2860,65 @@ function KononenkoSequence() {
           ref={phase1Ref}
           className="absolute inset-0 flex flex-col justify-center items-center pointer-events-none z-20"
         >
-          {/* Rotating Telemetry HUD Ring Wheel */}
+          {/* 8 Radial Guide Lines from Center with Numbered Labels */}
           <div
             ref={hudRingRef}
-            className="absolute w-[500px] h-[500px] md:w-[720px] md:h-[720px] lg:w-[880px] lg:h-[880px] rounded-full border border-white/10 pointer-events-none flex items-center justify-center"
+            className="absolute inset-0 pointer-events-none"
           >
-            {/* Degree Ticks around the ring */}
-            {[0, 45, 90, 135, 180, 225, 270, 315].map((deg) => {
-              const rad = (deg - 90) * (Math.PI / 180);
-              const x = 50 + 48 * Math.cos(rad);
-              const y = 50 + 48 * Math.sin(rad);
-              return (
-                <span
-                  key={'tick-' + deg}
-                  className="absolute font-mono text-[9px] text-amber-400 font-bold bg-[#060608] px-2 py-0.5 rounded border border-white/10 shadow-lg"
-                  style={{ left: `${x}%`, top: `${y}%`, transform: 'translate(-50%, -50%)' }}
-                >
-                  {deg}° // SYS
-                </span>
-              );
-            })}
-
-            {/* Inner Concentric Circle Guide Lines */}
-            <div className="w-[82%] h-[82%] rounded-full border border-white/10 border-dashed" />
-            <div className="w-[64%] h-[64%] rounded-full border border-white/5" />
+            <svg
+              className="absolute inset-0 w-full h-full"
+              viewBox="0 0 1000 1000"
+              preserveAspectRatio="xMidYMid meet"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {/* 8 radial lines at 45° increments, radiating from center (500,500) */}
+              {[
+                { angle: 202.5, label: "01" }, // bottom-left (SW-ish)
+                { angle: 157.5, label: "02" }, // left (W-ish)
+                { angle: 112.5, label: "03" }, // top-left (NW-ish)
+                { angle: 67.5,  label: "04" }, // top-right (NE-ish)
+                { angle: 22.5,  label: "05" }, // right (E-ish)
+                { angle: 337.5, label: "06" }, // bottom-right (SE-ish)
+                { angle: 292.5, label: "07" }, // bottom (S-ish)
+                { angle: 247.5, label: "08" }, // bottom-left (SSW-ish)
+              ].map(({ angle, label }) => {
+                const rad = (angle * Math.PI) / 180;
+                // Line starts 5px from center, ends near edge
+                const innerR = 5;
+                const outerR = 470;
+                const x1 = 500 + innerR * Math.cos(rad);
+                const y1 = 500 + innerR * Math.sin(rad);
+                const x2 = 500 + outerR * Math.cos(rad);
+                const y2 = 500 + outerR * Math.sin(rad);
+                // Label slightly beyond line end
+                const labelR = outerR + 28;
+                const lx = 500 + labelR * Math.cos(rad);
+                const ly = 500 + labelR * Math.sin(rad);
+                return (
+                  <g key={label}>
+                    <line
+                      x1={x1} y1={y1}
+                      x2={x2} y2={y2}
+                      stroke="rgba(255,255,255,0.25)"
+                      strokeWidth="0.8"
+                    />
+                    <text
+                      x={lx}
+                      y={ly}
+                      textAnchor="middle"
+                      dominantBaseline="middle"
+                      fill="rgba(255,255,255,0.55)"
+                      fontFamily="monospace"
+                      fontSize="18"
+                      fontWeight="400"
+                      letterSpacing="1"
+                    >
+                      {label}
+                    </text>
+                  </g>
+                );
+              })}
+            </svg>
           </div>
 
           {/* Central Headline Statement */}
