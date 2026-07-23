@@ -2589,98 +2589,145 @@ function Interests() {
 
 
 /* =====================================================================
-   KONONENKO-INSPIRED SCROLL SEQUENCE (DIRECTION 2 ENHANCED)
-   "Sub-Zero Monochrome Studio Vault" with Interactive Interest Filters & High-Contrast Stamp Badges
-   Phase 1: 360-Degree Rotating Telemetry HUD Ring ("Refined & Bold / Essential")
-   Phase 2: Precision Grid Line-by-Line Blurred Headline Reveal + Interactive Filter Pills
-   Phase 3: Horizontal Filmstrip with Live Telemetry Canvas Curves, VHS Timecode & Personal Metric Stamps
-   Phase 4: Holographic Glass Card Reveal with clip-path Expansion & Smooth Pin Exit
+   HYBRID: SUB-ZERO HUD ORBIT + KINETIC CHAOS WALL ON WHITE BACKGROUND
+   Phase 1: 360° Rotating HUD Ring & background morphing from dark to pure white
+   Phase 3: Replaces train-like filmstrip with the unaligned Kinetic Chaos Wall on white background
    ===================================================================== */
 
-const HUD_TELEMETRY_CARDS = [
-  { id: 1, category: "f1", title: "SF-24 Apex Telemetry", frame: "FRAME 01 / 08", metric: "351 KM/H", code: "SCUDERIA FERRARI • 1000 HP", img: "/images/kononenko_studio_1.png", accent: "#ef4444", rot: -12, yOffset: 35 },
-  { id: 2, category: "coffee", title: "AeroPress Double Shot", frame: "FRAME 02 / 08", metric: "93°C BREW", code: "3:00 AM MIDNIGHT PROTOCOL", img: "/images/kononenko_studio_2.png", accent: "#f59e0b", rot: -5, yOffset: -30 },
-  { id: 3, category: "thriller", title: "Hitchcock Thriller Noir", frame: "FRAME 03 / 08", metric: "9.8 RATING", code: "DARK / SEVERANCE NOIR", img: "/images/kononenko_studio_3.png", accent: "#a855f7", rot: 8, yOffset: 35 },
-  { id: 4, category: "tech", title: "Next.js 15 AI Engine", frame: "FRAME 04 / 08", metric: "100ms LATENCY", code: "SYSTEM ARCHITECTURE", img: "/images/kononenko_studio_4.png", accent: "#0284c7", rot: 16, yOffset: -40 },
-  { id: 5, category: "f1", title: "Monza Speed Trap", frame: "FRAME 05 / 08", metric: "5.4 G PEAK", code: "LATERAL G-FORCE // GEAR 8", img: "/images/kononenko_studio_1.png", accent: "#dc2626", rot: -10, yOffset: 25 },
-  { id: 6, category: "coffee", title: "Night Shift Editor", frame: "FRAME 06 / 08", metric: "0 LINT BUGS", code: "VS CODE // CLEAN BUILD", img: "/images/kononenko_studio_2.png", accent: "#10b981", rot: 10, yOffset: -35 },
-  { id: 7, category: "tech", title: "Digital Flagship Stores", frame: "FRAME 07 / 08", metric: "Y-3 CRAFT", code: "FULL-STACK FOUNDER", img: "/images/kononenko_studio_3.png", accent: "#8b5cf6", rot: -7, yOffset: 30 },
-  { id: 8, category: "tech", title: "Open World Strategy", frame: "FRAME 08 / 08", metric: "LEVEL 99", code: "EXPLORER // ADVENTURE", img: "/images/kononenko_studio_4.png", accent: "#2563eb", rot: 14, yOffset: -18 },
+const OBSESSED_ITEMS = [
+  {
+    id: "f1-apex",
+    category: "f1",
+    tag: "SCUDERIA FERRARI",
+    badge: "1000 HP",
+    title: "SF-24 Apex Telemetry",
+    desc: "Late-braking telemetry trace & tire degradation strategy at 351 km/h.",
+    metric: "351 KM/H",
+    code: "GEAR 8 // 5.4 G",
+    bgImg: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&q=80&w=1000",
+    accent: "#ef4444",
+    initialRot: -11,
+    yOffset: 25,
+    xOffset: -15,
+    span: "col-span-1 md:col-span-6 lg:col-span-4",
+    aspect: "aspect-[4/5]",
+    quote: "“If you no longer go for a gap that exists, you are no longer a racing driver.”",
+    author: "— Ayrton Senna",
+  },
+  {
+    id: "coffee-brew",
+    category: "coffee",
+    tag: "AEROPRESS & ESPRESSO",
+    badge: "93°C BREW",
+    title: "Double Shot Fuel",
+    desc: "Essential fuel for 3:00 AM midnight commits, motion polish & micro-interactions.",
+    metric: "€ 4.50",
+    code: "3:00 AM PROTOCOL",
+    bgImg: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&q=80&w=1000",
+    accent: "#d97706",
+    initialRot: 7,
+    yOffset: -35,
+    xOffset: 20,
+    span: "col-span-1 md:col-span-6 lg:col-span-4",
+    aspect: "aspect-[4/5]",
+    quote: "“I have measured out my life with coffee spoons.”",
+    author: "— T.S. Eliot",
+  },
+  {
+    id: "thriller-noir",
+    category: "thriller",
+    tag: "DARK / SEVERANCE",
+    badge: "MIND-BENDING",
+    title: "Psychological Thrillers",
+    desc: "Obsessed with complex puzzle narratives, time loops, and neo-noir atmosphere.",
+    metric: "9.8 RATING",
+    code: "NOIR // SUSPENSE",
+    bgImg: "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&q=80&w=1000",
+    accent: "#7c3aed",
+    initialRot: -6,
+    yOffset: 45,
+    xOffset: -10,
+    span: "col-span-1 md:col-span-6 lg:col-span-4",
+    aspect: "aspect-[4/5]",
+    quote: "“There is no terror in the bang, only in the anticipation of it.”",
+    author: "— Alfred Hitchcock",
+  },
+  {
+    id: "craft-flagship",
+    category: "tech",
+    tag: "FULL-STACK FOUNDER",
+    badge: "Y-3 ESTHETIC",
+    title: "Digital Flagship Craft",
+    desc: "Building high-conversion digital experiences, fluid motion, & type-safe frontends.",
+    metric: "100% INTENT",
+    code: "REACT // GSAP // TANSTACK",
+    bgImg: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=1000",
+    accent: "#0284c7",
+    initialRot: 12,
+    yOffset: -20,
+    xOffset: 30,
+    span: "col-span-1 md:col-span-6 lg:col-span-5",
+    aspect: "aspect-[16/10]",
+    quote: "“Great software is felt before it's understood.”",
+    author: "— Rajat Jhade",
+  },
+  {
+    id: "monza-redline",
+    category: "f1",
+    tag: "MONZA SPEED TRAP",
+    badge: "REDLINE",
+    title: "1000 HP Monza Redline",
+    desc: "Late-braking zones, lateral G forces, and high-velocity apex execution.",
+    metric: "5.4 G PEAK",
+    code: "LATERAL FORCE",
+    bgImg: "https://images.unsplash.com/photo-1508974239320-0a029497e820?auto=format&fit=crop&q=80&w=1000",
+    accent: "#dc2626",
+    initialRot: -8,
+    yOffset: 30,
+    xOffset: -25,
+    span: "col-span-1 md:col-span-6 lg:col-span-7",
+    aspect: "aspect-[16/9]",
+    quote: "“Straight lines are for fast cars, turns are for fast drivers.”",
+    author: "— Colin McRae",
+  },
+  {
+    id: "night-shift-commit",
+    category: "coffee",
+    tag: "NIGHT SHIFT PROTOCOL",
+    badge: "BUILD PASSED",
+    title: "3:00 AM Commits",
+    desc: "Dark mode editor, zero lint warnings, and pure intentional craft.",
+    metric: "0 LINT BUGS",
+    code: "VS CODE // CLEAN BUILD",
+    bgImg: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1000",
+    accent: "#10b981",
+    initialRot: 9,
+    yOffset: -40,
+    xOffset: 15,
+    span: "col-span-1 md:col-span-6 lg:col-span-4",
+    aspect: "aspect-[4/5]",
+    quote: "“Code is like humor. When you have to explain it, it’s bad.”",
+    author: "— Cory House",
+  },
 ];
-
-/* Live Telemetry Waveform Overlay for HUD Cards */
-function HUDTelemetryCanvas({ card }: { card: typeof HUD_TELEMETRY_CARDS[number] }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let animId: number;
-    let offset = 0;
-
-    const resize = () => {
-      canvas.width = canvas.parentElement?.clientWidth || 360;
-      canvas.height = canvas.parentElement?.clientHeight || 460;
-    };
-    resize();
-
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Draw subtle HUD Telemetry Sine Wave
-      ctx.strokeStyle = card.accent;
-      ctx.lineWidth = 2;
-      ctx.shadowColor = card.accent;
-      ctx.shadowBlur = 8;
-      ctx.beginPath();
-      for (let x = 0; x < canvas.width; x += 4) {
-        const noise = Math.sin(x * 0.03 + offset) * 14 + Math.cos(x * 0.06 - offset * 1.4) * 6;
-        const y = canvas.height * 0.72 + noise;
-        if (x === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-      ctx.shadowBlur = 0;
-
-      // Draw HUD Coordinate Ticks & Text
-      ctx.fillStyle = "rgba(255,255,255,0.75)";
-      ctx.font = "9px monospace";
-      ctx.fillText(`HUD TELEMETRY // ${card.code} // METRIC ${card.metric}`, 16, canvas.height - 24);
-
-      offset += 0.05;
-      animId = requestAnimationFrame(draw);
-    };
-    draw();
-
-    return () => cancelAnimationFrame(animId);
-  }, [card]);
-
-  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-20" />;
-}
 
 function KononenkoSequence() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const phase1Ref = useRef<HTMLDivElement>(null);
   const hudRingRef = useRef<HTMLDivElement>(null);
-  const headlinePhase2Ref = useRef<HTMLDivElement>(null);
-  const filmstripTrackRef = useRef<HTMLDivElement>(null);
-  const holoCardRef = useRef<HTMLDivElement>(null);
+  const phase2WallRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  const [activeInterestFilter, setActiveInterestFilter] = useState<string>("all");
+  const [activeFilter, setActiveFilter] = useState<string>("all");
+  const [selectedCard, setSelectedCard] = useState<typeof OBSESSED_ITEMS[number] | null>(null);
 
-  // Mouse tilt tracking
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!sectionRef.current) return;
-    const rect = sectionRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setMousePos({ x, y });
-  };
+  const filterTabs = [
+    { id: "all", label: "ALL OBSESSIONS" },
+    { id: "f1", label: "FORMULA 1" },
+    { id: "coffee", label: "CAFFEINE" },
+    { id: "thriller", label: "THRILLERS" },
+    { id: "tech", label: "CRAFT & TECH" },
+  ];
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -2688,84 +2735,48 @@ function KononenkoSequence() {
     if (!section) return;
 
     const ctx = gsap.context(() => {
-      // Set initial states to prevent FOUC / render flickering
       gsap.set(phase1Ref.current, { opacity: 1, scale: 1, filter: "blur(0px)" });
-      if (hudRingRef.current) gsap.set(hudRingRef.current, { rotate: 0, scale: 1, opacity: 1, transformOrigin: "50% 50%" });
-      if (headlinePhase2Ref.current) gsap.set(headlinePhase2Ref.current, { opacity: 0, y: 0 });
-      if (filmstripTrackRef.current) gsap.set(filmstripTrackRef.current, { opacity: 0, x: "80vw" });
-      if (holoCardRef.current) gsap.set(holoCardRef.current, { opacity: 0, scale: 0.95, y: 30, pointerEvents: "none" });
+      if (hudRingRef.current) gsap.set(hudRingRef.current, { rotate: 0, opacity: 1 });
+      if (phase2WallRef.current) gsap.set(phase2WallRef.current, { opacity: 0, y: 80 });
 
-      // Main Pinned ScrollTrigger Timeline with smooth scrub
+      // Main Pinned Sequence Timeline
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: "+=680%",
+          end: "+=450%",
           pin: true,
-          scrub: 1.5, // Ultra-smooth, extra slow scrubbing
+          scrub: 1.2,
           anticipatePin: 1,
         },
       });
 
-      // ----------------------------------------------------
-      // PHASE 1: 1 Full 360° Rotation + Slow Smooth White Background Transition
-      // ----------------------------------------------------
+      // Phase 1: 360-degree Rotating Ring & Smooth transition to white background
       if (hudRingRef.current) {
-        // 1 full 360-degree rotation
-        tl.to(hudRingRef.current, {
-          rotate: 360,
-          duration: 6.0,
-          ease: "none",
-        });
+        tl.to(hudRingRef.current, { rotate: 360, duration: 4.5, ease: "none" });
       }
 
-      // Smooth background color transformation from dark (#060608) to pure white (#ffffff)
       if (sectionRef.current) {
-        tl.to(sectionRef.current, {
-          backgroundColor: "#ffffff",
-          duration: 6.0,
-          ease: "none",
-        }, "<");
+        tl.to(sectionRef.current, { backgroundColor: "#ffffff", duration: 4.5, ease: "none" }, "<");
       }
 
-      // Smooth color inversion for SVG radial lines, labels, and central headline text
       const svgLines = hudRingRef.current?.querySelectorAll("line");
       if (svgLines && svgLines.length > 0) {
-        tl.to(svgLines, {
-          stroke: "rgba(0, 0, 0, 0.25)",
-          duration: 6.0,
-          ease: "none",
-        }, "<");
+        tl.to(svgLines, { stroke: "rgba(0, 0, 0, 0.25)", duration: 4.5, ease: "none" }, "<");
       }
 
       const svgTexts = hudRingRef.current?.querySelectorAll("text");
       if (svgTexts && svgTexts.length > 0) {
-        tl.to(svgTexts, {
-          fill: "rgba(0, 0, 0, 0.75)",
-          duration: 6.0,
-          ease: "none",
-        }, "<");
+        tl.to(svgTexts, { fill: "rgba(0, 0, 0, 0.75)", duration: 4.5, ease: "none" }, "<");
       }
 
       const headlineH2 = phase1Ref.current?.querySelector("h2");
-      if (headlineH2) {
-        tl.to(headlineH2, {
-          color: "#000000",
-          duration: 6.0,
-          ease: "none",
-        }, "<");
-      }
+      if (headlineH2) tl.to(headlineH2, { color: "#000000", duration: 4.5, ease: "none" }, "<");
 
       const headlineH3 = phase1Ref.current?.querySelector("h3");
-      if (headlineH3) {
-        tl.to(headlineH3, {
-          color: "rgba(0, 0, 0, 0.55)",
-          duration: 6.0,
-          ease: "none",
-        }, "<");
-      }
+      if (headlineH3) tl.to(headlineH3, { color: "rgba(0, 0, 0, 0.55)", duration: 4.5, ease: "none" }, "<");
 
-      // PHASE 1 Fade Out (Fades out smoothly after 1 rotation + white background transformation completes)
+      // Fade out Phase 1 Ring
       tl.to(phase1Ref.current, {
         scale: 1.15,
         opacity: 0,
@@ -2774,191 +2785,93 @@ function KononenkoSequence() {
         ease: "power2.inOut",
       });
 
-      // ----------------------------------------------------
-      // PHASE 2 (Scroll 3): Precision Line-by-Line Headline Mask Reveal ("a studio shaped by...")
-      // ----------------------------------------------------
-      tl.to(headlinePhase2Ref.current, {
-        opacity: 1,
-        duration: 0.4,
-        ease: "none",
-      }, "<");
-
-      const headlineLines = headlinePhase2Ref.current?.querySelectorAll(".line-item");
-      if (headlineLines) {
-        tl.fromTo(
-          headlineLines,
-          { yPercent: 120, opacity: 0, filter: "blur(8px)" },
-          {
-            yPercent: 0,
-            opacity: 1,
-            filter: "blur(0px)",
-            stagger: 0.12,
-            duration: 1.2,
-            ease: "expo.out",
-          },
-          "<"
-        );
-      }
-
-      // ----------------------------------------------------
-      // PHASE 3: Horizontal Photo Filmstrip (Starts AFTER Circle completes)
-      // ----------------------------------------------------
-      if (filmstripTrackRef.current) {
-        tl.to(filmstripTrackRef.current, {
+      // Phase 2: Reveal Kinetic Chaos Wall on White Background
+      if (phase2WallRef.current) {
+        tl.to(phase2WallRef.current, {
           opacity: 1,
-          duration: 0.4,
-          ease: "none",
-        }, ">");
-
-        tl.to(
-          filmstripTrackRef.current,
-          {
-            x: "-185vw",
-            duration: 4.5,
-            ease: "none",
-          },
-          "<"
-        );
+          y: 0,
+          duration: 1.5,
+          ease: "power3.out",
+        }, "<");
       }
 
-      // Headline gracefully fades out as filmstrip sweeps across
-      if (headlinePhase2Ref.current) {
-        tl.to(
-          headlinePhase2Ref.current,
-          {
-            opacity: 0,
-            y: -50,
-            filter: "blur(10px)",
-            duration: 1.2,
-            ease: "power2.in",
-          },
-          "-=3.0"
-        );
-      }
+      // Staggered Unaligned Entrance for each Kinetic Card on White Background
+      const cards = cardsRef.current.filter(Boolean);
+      cards.forEach((card, idx) => {
+        const item = OBSESSED_ITEMS[idx];
+        if (!card || !item) return;
 
-      // ----------------------------------------------------
-      // PHASE 4: Sub-Zero Telemetry Manifesto Reveal (Stays visible until smooth section transition)
-      // ----------------------------------------------------
-      if (filmstripTrackRef.current) {
-        tl.to(
-          filmstripTrackRef.current,
+        const entranceX = (idx % 2 === 0 ? -1 : 1) * (60 + idx * 20);
+        const entranceY = 80 + (idx % 3) * 30;
+
+        tl.fromTo(
+          card,
           {
             opacity: 0,
-            scale: 0.92,
-            filter: "blur(10px)",
-            duration: 1.2,
-            ease: "power2.in",
+            x: entranceX,
+            y: entranceY,
+            rotate: item.initialRot * 2,
+            scale: 0.88,
+            filter: "blur(8px)",
+          },
+          {
+            opacity: 1,
+            x: item.xOffset,
+            y: item.yOffset,
+            rotate: item.initialRot,
+            scale: 1,
+            filter: "blur(0px)",
+            duration: 1.5,
+            ease: "power3.out",
           },
           "-=1.2"
         );
-      }
+      });
 
-      if (holoCardRef.current) {
-        tl.to(
-          holoCardRef.current,
-          {
-            opacity: 1,
-            scale: 1,
-            y: 0,
-            pointerEvents: "auto",
-            duration: 1.5,
-            ease: "expo.out",
-          },
-          "-=0.8"
-        );
-
-        // Holds clean until section unpins seamlessly into Services
-        tl.to(holoCardRef.current, {
-          scale: 1,
-          duration: 2.5,
-          ease: "none",
-        });
-      }
+      // Hold wall visible cleanly on screen before unpinning
+      tl.to(phase2WallRef.current, {
+        y: 0,
+        duration: 2.0,
+        ease: "none",
+      });
     }, section);
 
     return () => ctx.revert();
   }, []);
 
-  const filterTabs = [
-    { id: "all", label: "ALL" },
-    { id: "f1", label: "FORMULA 1" },
-    { id: "coffee", label: "CAFFEINE" },
-    { id: "thriller", label: "THRILLERS" },
-    { id: "tech", label: "TECH & GAMING" },
-  ];
-
   return (
     <section
-      id="kononenko-sequence"
+      id="obsessed-sequence"
       ref={sectionRef}
-      onMouseMove={handleMouseMove}
-      className="relative bg-[#060608] text-white select-none overflow-hidden"
+      className="relative bg-[#060608] text-black select-none overflow-hidden"
     >
-      {/* Ambient Drifting Telemetry Grid & Radial Vignette */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.04)_0%,transparent_75%)] pointer-events-none" />
-      <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
+      {/* Ambient Drifting Grid */}
+      <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
 
-      {/* Sticky Viewport Container */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center items-center relative">
-        
-        {/* PHASE 1: 360-Degree Rotating Telemetry HUD Ring ("Refined & Bold / Essential") */}
-        <div
-          ref={phase1Ref}
-          className="absolute inset-0 flex flex-col justify-center items-center pointer-events-none z-20"
-        >
-          {/* 8 Radial Guide Lines from Center with Numbered Labels */}
-          <div
-            ref={hudRingRef}
-            className="absolute inset-0 pointer-events-none"
-          >
-            <svg
-              className="absolute inset-0 w-full h-full"
-              viewBox="0 0 1000 1000"
-              preserveAspectRatio="xMidYMid meet"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              {/* 8 radial lines at 45° increments, radiating from center (500,500) */}
+        {/* Phase 1: 360-Degree Rotating Telemetry HUD Ring */}
+        <div ref={phase1Ref} className="absolute inset-0 flex flex-col justify-center items-center pointer-events-none z-20">
+          <div ref={hudRingRef} className="absolute inset-0 pointer-events-none">
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
               {[
-                { angle: 202.5, label: "01" }, // bottom-left (SW-ish)
-                { angle: 157.5, label: "02" }, // left (W-ish)
-                { angle: 112.5, label: "03" }, // top-left (NW-ish)
-                { angle: 67.5,  label: "04" }, // top-right (NE-ish)
-                { angle: 22.5,  label: "05" }, // right (E-ish)
-                { angle: 337.5, label: "06" }, // bottom-right (SE-ish)
-                { angle: 292.5, label: "07" }, // bottom (S-ish)
-                { angle: 247.5, label: "08" }, // bottom-left (SSW-ish)
+                { angle: 202.5, label: "01" },
+                { angle: 157.5, label: "02" },
+                { angle: 112.5, label: "03" },
+                { angle: 67.5, label: "04" },
+                { angle: 22.5, label: "05" },
+                { angle: 337.5, label: "06" },
               ].map(({ angle, label }) => {
                 const rad = (angle * Math.PI) / 180;
-                // Line starts 5px from center, ends near edge
-                const innerR = 5;
-                const outerR = 470;
-                const x1 = 500 + innerR * Math.cos(rad);
-                const y1 = 500 + innerR * Math.sin(rad);
-                const x2 = 500 + outerR * Math.cos(rad);
-                const y2 = 500 + outerR * Math.sin(rad);
-                // Label slightly beyond line end
-                const labelR = outerR + 28;
-                const lx = 500 + labelR * Math.cos(rad);
-                const ly = 500 + labelR * Math.sin(rad);
+                const x1 = 500 + 5 * Math.cos(rad);
+                const y1 = 500 + 5 * Math.sin(rad);
+                const x2 = 500 + 470 * Math.cos(rad);
+                const y2 = 500 + 470 * Math.sin(rad);
+                const lx = 500 + 498 * Math.cos(rad);
+                const ly = 500 + 498 * Math.sin(rad);
                 return (
                   <g key={label}>
-                    <line
-                      x1={x1} y1={y1}
-                      x2={x2} y2={y2}
-                      stroke="rgba(255,255,255,0.25)"
-                      strokeWidth="0.8"
-                    />
-                    <text
-                      x={lx}
-                      y={ly}
-                      textAnchor="middle"
-                      dominantBaseline="middle"
-                      fill="rgba(255,255,255,0.55)"
-                      fontFamily="monospace"
-                      fontSize="18"
-                      fontWeight="400"
-                      letterSpacing="1"
-                    >
+                    <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(255,255,255,0.25)" strokeWidth="0.8" />
+                    <text x={lx} y={ly} textAnchor="middle" dominantBaseline="middle" fill="rgba(255,255,255,0.55)" fontFamily="monospace" fontSize="18">
                       {label}
                     </text>
                   </g>
@@ -2967,7 +2880,6 @@ function KononenkoSequence() {
             </svg>
           </div>
 
-          {/* Central Headline Statement */}
           <div className="text-center space-y-2 z-30 px-4">
             <h2 className="font-serif text-5xl md:text-7xl lg:text-9xl tracking-tight leading-none text-white font-normal">
               Currently
@@ -2978,160 +2890,175 @@ function KononenkoSequence() {
           </div>
         </div>
 
-        {/* PHASE 2: Precision Grid-Aligned Line-by-Line Blurred Headline Reveal + Filter Bar */}
-        <div className="absolute top-10 inset-x-0 z-30 pointer-events-none max-w-[110rem] mx-auto px-6 md:px-16 lg:px-20">
-          <div
-            ref={headlinePhase2Ref}
-            className="max-w-2xl pointer-events-none space-y-4"
-          >
-            {/* Header Badge & Interactive Interest Filter Pills */}
-            <div className="flex flex-wrap items-center gap-3 pointer-events-auto">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-                <span className="font-mono text-[10px] uppercase tracking-[0.35em] text-black/70 font-bold">
-                  PEOPLE & PROCESS • HUD 02
-                </span>
-              </div>
-
-              {/* Micro Filter Pills */}
-              <div className="flex items-center gap-1.5 bg-black/5 backdrop-blur-md p-1 rounded-full border border-black/15 shadow-lg">
-                {filterTabs.map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveInterestFilter(tab.id)}
-                    className={`px-2.5 py-0.5 rounded-full font-mono text-[8.5px] uppercase tracking-wider transition-all cursor-pointer ${
-                      activeInterestFilter === tab.id
-                        ? "bg-black text-white font-extrabold shadow-md"
-                        : "text-black/60 hover:text-black hover:bg-black/10"
-                    }`}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
+        {/* Phase 2: Kinetic Chaos Wall on White Background */}
+        <div
+          ref={phase2WallRef}
+          className="absolute inset-0 z-30 flex flex-col justify-center max-w-[110rem] mx-auto px-6 md:px-12 py-12 overflow-y-auto pointer-events-auto opacity-0"
+        >
+          {/* Header & Category Filter Pills */}
+          <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
+              <span className="font-mono text-xs uppercase tracking-[0.3em] text-black/70 font-extrabold">
+                CURATED MOODBOARD • KINETIC CHAOS
+              </span>
             </div>
 
-            <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl text-black font-normal leading-[1.04] tracking-tight">
-              <div className="overflow-hidden pb-1">
-                <span className="line-item block">A studio shaped by</span>
-              </div>
-              <div className="overflow-hidden pb-1">
-                <span className="line-item block">clarity, trust, and a</span>
-              </div>
-              <div className="overflow-hidden pb-1">
-                <span className="line-item block">collective pursuit of</span>
-              </div>
-              <div className="overflow-hidden pb-1">
-                <span className="line-item block italic text-amber-600 font-light">thoughtful design.</span>
-              </div>
-            </h2>
+            {/* Micro Filter Pills */}
+            <div className="flex flex-wrap items-center gap-2 bg-black/5 backdrop-blur-md p-1.5 rounded-full border border-black/15 shadow-md">
+              {filterTabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveFilter(tab.id)}
+                  className={`px-4 py-1.5 rounded-full font-mono text-xs uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+                    activeFilter === tab.id
+                      ? "bg-black text-white font-extrabold shadow-lg scale-105"
+                      : "text-black/60 hover:text-black hover:bg-black/10"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Scattered Unaligned Grid Wall on White Canvas */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
+            {OBSESSED_ITEMS.map((item, idx) => {
+              const isMatch = activeFilter === "all" || item.category === activeFilter;
+
+              return (
+                <div
+                  key={item.id}
+                  ref={(el) => {
+                    cardsRef.current[idx] = el;
+                  }}
+                  onClick={() => setSelectedCard(item)}
+                  className={`${item.span} relative group cursor-pointer transition-all duration-500 z-10 ${
+                    isMatch ? "opacity-100" : "opacity-20 grayscale pointer-events-none"
+                  }`}
+                  style={{ transformStyle: "preserve-3d" }}
+                  data-cursor="Inspect"
+                >
+                  {/* High-Contrast White Polaroid Card with Deep Shadow */}
+                  <motion.div
+                    whileHover={{
+                      scale: 1.06,
+                      rotate: 0, // Straightens cleanly on hover
+                      zIndex: 50,
+                      y: item.yOffset - 15,
+                    }}
+                    transition={{ type: "spring", stiffness: 350, damping: 22 }}
+                    className={`w-full ${item.aspect} rounded-[2.2rem] overflow-hidden border border-black/15 bg-black text-white relative flex flex-col justify-between p-6 md:p-8 shadow-[0_25px_60px_rgba(0,0,0,0.3)] group-hover:shadow-[0_35px_90px_rgba(0,0,0,0.5)] group-hover:border-black/40 transition-all duration-500`}
+                  >
+                    {/* Background Image */}
+                    <div className="absolute inset-0 z-0 overflow-hidden">
+                      <img
+                        src={item.bgImg}
+                        alt={item.title}
+                        className="w-full h-full object-cover scale-105 group-hover:scale-115 transition-transform duration-1000 ease-out opacity-50 group-hover:opacity-75"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+                    </div>
+
+                    {/* Corner Accent Glow */}
+                    <div
+                      className="absolute -top-12 -right-12 w-32 h-32 rounded-full opacity-30 blur-2xl group-hover:opacity-70 transition-opacity duration-500 pointer-events-none z-10"
+                      style={{ backgroundColor: item.accent }}
+                    />
+
+                    {/* Top Bar */}
+                    <div className="relative z-20 flex items-center justify-between">
+                      <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/90 font-bold bg-black/70 backdrop-blur-md px-3 py-1 rounded-full border border-white/10">
+                        {item.tag}
+                      </span>
+                      <span className="font-mono text-[9px] font-extrabold uppercase px-3 py-1 rounded-full bg-white text-black shadow-lg group-hover:scale-105 transition-transform">
+                        {item.badge}
+                      </span>
+                    </div>
+
+                    {/* Bottom Content */}
+                    <div className="relative z-20 space-y-2">
+                      <div className="font-mono text-[8px] uppercase tracking-widest text-white/60 flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: item.accent }} />
+                        {item.code}
+                      </div>
+                      <h3 className="font-display text-xl md:text-2xl font-extrabold uppercase text-white tracking-tight leading-tight group-hover:text-amber-300 transition-colors">
+                        {item.title}
+                      </h3>
+                      <p className="text-xs text-white/70 leading-relaxed font-sans line-clamp-2">
+                        {item.desc}
+                      </p>
+                    </div>
+                  </motion.div>
+                </div>
+              );
+            })}
           </div>
         </div>
+      </div>
 
-        {/* PHASE 3: Horizontal Photo Filmstrip with Active Highlight Deck */}
-        <div
-          ref={filmstripTrackRef}
-          className="absolute top-[64%] -translate-y-1/2 flex items-center gap-8 md:gap-14 z-20 pointer-events-auto cursor-grab active:cursor-grabbing pl-[10vw] opacity-0"
-          style={{
-            perspective: "1200px",
-            transformStyle: "preserve-3d",
-          }}
-        >
-          {HUD_TELEMETRY_CARDS.map((card, idx) => {
-            const isMatch = activeInterestFilter === "all" || card.category === activeInterestFilter;
-            return (
+      {/* Expanded Modal View */}
+      <AnimatePresence>
+        {selectedCard && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedCard(null)}
+              className="fixed inset-0 z-[100] bg-black/85 backdrop-blur-md"
+            />
+
+            <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 md:p-8 pointer-events-none">
               <motion.div
-                key={'hud-card-' + card.id + '-' + idx}
-                style={{
-                  rotateX: mousePos.y * 6,
-                  rotateY: mousePos.x * 6,
-                }}
-                whileHover={{ scale: 1.08, z: 40 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className={`hud-card relative shrink-0 w-[270px] md:w-[360px] lg:w-[410px] aspect-[4/5] rounded-3xl overflow-hidden border border-white/20 bg-[#0d0d10] transition-all duration-500 group ${
-                  isMatch ? "opacity-100 shadow-[0_25px_60px_rgba(0,0,0,0.9)]" : "opacity-30 grayscale"
-                }`}
+                initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.95, opacity: 0, y: 20 }}
+                transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                className="w-full max-w-3xl bg-[#0a0a0d] border border-white/20 rounded-[2.5rem] p-8 md:p-12 shadow-2xl relative pointer-events-auto overflow-hidden text-white space-y-8"
               >
-                {/* Photo Media Asset */}
-                <img
-                  src={card.img}
-                  alt={card.title}
-                  className="w-full h-full object-cover scale-105 group-hover:scale-115 transition-transform duration-1000 ease-out"
-                />
+                {/* Close Button */}
+                <button
+                  onClick={() => setSelectedCard(null)}
+                  className="absolute top-6 right-6 text-white/60 hover:text-white p-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-colors cursor-pointer"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
 
-                {/* VHS Scanlines & Dark Overlay */}
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.35)_50%),linear-gradient(90deg,rgba(255,0,0,0.04),rgba(0,255,0,0.01),rgba(0,0,255,0.04))] bg-[size:100%_4px,6px_100%] pointer-events-none z-10 opacity-70" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-80 group-hover:opacity-65 transition-opacity" />
-
-                {/* Live Canvas Telemetry Waveform Overlay */}
-                <HUDTelemetryCanvas card={card} />
-
-                {/* Top HUD Bar with High-Contrast White/Amber Stamp Badge */}
-                <div className="absolute top-4 left-4 right-4 flex justify-between items-center font-mono text-[9px] uppercase tracking-widest text-white/80 z-30 bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 shadow-lg">
-                  <span className="flex items-center gap-2 font-bold text-red-400">
-                    <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
-                    {card.frame}
-                  </span>
-                  {/* High-Contrast White Stamp Badge */}
-                  <span className="px-2.5 py-0.5 rounded bg-[#f4f4f6] text-black font-extrabold text-[9px] shadow-lg">
-                    {card.metric}
-                  </span>
+                <div className="space-y-2">
+                  <div className="font-mono text-xs uppercase tracking-widest text-primary font-bold flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                    {selectedCard.tag} • {selectedCard.badge}
+                  </div>
+                  <h3 className="font-display text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-white">
+                    {selectedCard.title}
+                  </h3>
                 </div>
 
-                {/* Bottom Card Specs & Custom Interest Tags */}
-                <div className="absolute bottom-5 left-5 right-5 z-30 space-y-1">
-                  <span className="font-mono text-[8px] uppercase tracking-widest text-cyan-400 font-bold block">
-                    {card.code}
-                  </span>
-                  <h4 className="font-display text-lg md:text-xl font-extrabold uppercase text-white tracking-tight leading-tight group-hover:text-amber-300 transition-colors">
-                    {card.title}
-                  </h4>
+                <p className="text-white/80 text-base md:text-lg leading-relaxed font-sans">
+                  {selectedCard.desc}
+                </p>
+
+                <div className="border-l-2 border-primary pl-4 py-2 space-y-1 bg-white/[0.02] rounded-r-xl">
+                  <p className="text-white/90 text-sm md:text-base italic font-serif">
+                    {selectedCard.quote}
+                  </p>
+                  <p className="text-white/40 text-xs font-mono">{selectedCard.author}</p>
+                </div>
+
+                <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/50">
+                  <span>METRIC: {selectedCard.metric}</span>
+                  <span>{selectedCard.code}</span>
                 </div>
               </motion.div>
-            );
-          })}
-        </div>
-
-        {/* PHASE 4: Holographic Glass Card Reveal & Smooth Unpin */}
-        <div
-          ref={holoCardRef}
-          className="absolute inset-6 md:inset-16 lg:inset-24 bg-[#0a0a0e]/90 text-white rounded-[2.5rem] border border-white/20 p-8 md:p-16 flex flex-col justify-between z-40 shadow-[0_40px_120px_rgba(0,0,0,0.95)] opacity-0 pointer-events-auto overflow-hidden backdrop-blur-xl"
-        >
-          {/* Background Watermark */}
-          <div className="absolute -right-16 -bottom-16 font-mono text-[14rem] font-extrabold text-white/[0.03] leading-none pointer-events-none select-none">
-            TELEMETRY
-          </div>
-
-          <div className="flex items-center justify-between border-b border-white/10 pb-6">
-            <span className="font-mono text-xs uppercase tracking-[0.35em] text-white/50 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-              SUB-ZERO TELEMETRY • SYSTEM MANIFESTO
-            </span>
-            <span className="font-mono text-xs uppercase tracking-[0.2em] bg-white text-black font-extrabold px-3 py-1 rounded-full shadow-lg">
-              04 / 04 UNPIN
-            </span>
-          </div>
-
-          <div className="max-w-3xl my-auto space-y-6">
-            <h3 className="font-serif text-3xl md:text-5xl lg:text-6xl font-normal leading-[1.1] text-white">
-              “Architecture and digital software are identical crafts — both require structural integrity, spatial rhythm, and absolute clarity.”
-            </h3>
-            <p className="font-mono text-sm text-cyan-400 tracking-wider uppercase font-bold">
-              — KONONENKO SYSTEM DIRECTIVE
-            </p>
-          </div>
-
-          <div className="pt-6 border-t border-white/10 flex items-center justify-between">
-            <span className="font-mono text-xs text-white/40">
-              SCROLL DOWN TO EXPLORE SERVICES
-            </span>
-            <div className="flex items-center gap-2 font-mono text-xs text-amber-400 font-bold">
-              <span>CONTINUE JOURNEY ↓</span>
             </div>
-          </div>
-        </div>
-
-      </div>
+          </>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
+
