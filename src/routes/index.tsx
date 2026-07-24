@@ -2755,43 +2755,74 @@ function KononenkoSequence() {
 
       // Phase 1: 360-degree Rotating Ring & Smooth transition to white background
       if (hudRingRef.current) {
-        tl.to(hudRingRef.current, { rotate: 360, duration: 4.5, ease: "none" });
+        tl.to(hudRingRef.current, { rotate: 360, duration: 3.5, ease: "none" });
       }
 
       if (sectionRef.current) {
-        tl.to(sectionRef.current, { backgroundColor: "#ffffff", duration: 4.5, ease: "none" }, "<");
+        tl.to(sectionRef.current, { backgroundColor: "#ffffff", duration: 3.5, ease: "none" }, "<");
       }
 
-      const svgLines = hudRingRef.current?.querySelectorAll("line");
-      if (svgLines && svgLines.length > 0) {
-        tl.to(svgLines, { stroke: "rgba(0, 0, 0, 0.25)", duration: 4.5, ease: "none" }, "<");
+      const headlineH2 = phase1Ref.current?.querySelector("h2");
+      if (headlineH2) tl.to(headlineH2, { color: "#000000", duration: 3.5, ease: "none" }, "<");
+
+      const headlineH3 = phase1Ref.current?.querySelector("h3");
+      if (headlineH3) tl.to(headlineH3, { color: "rgba(0, 0, 0, 0.65)", duration: 3.5, ease: "none" }, "<");
+
+      const svgPaths = hudRingRef.current?.querySelectorAll(".hud-rope-path");
+      if (svgPaths && svgPaths.length > 0) {
+        tl.to(svgPaths, { stroke: "rgba(0, 0, 0, 0.40)", strokeWidth: 0.9, duration: 3.5, ease: "none" }, "<");
+
+        tl.addLabel("waveStart", "<");
+
+        svgPaths.forEach((pathEl: any) => {
+          const x1 = parseFloat(pathEl.getAttribute("data-x1"));
+          const y1 = parseFloat(pathEl.getAttribute("data-y1"));
+          const x2 = parseFloat(pathEl.getAttribute("data-x2"));
+          const y2 = parseFloat(pathEl.getAttribute("data-y2"));
+          const midX = parseFloat(pathEl.getAttribute("data-midx"));
+          const midY = parseFloat(pathEl.getAttribute("data-midy"));
+
+          const wavePath1 = `M ${x1} ${y1} Q ${midX} ${midY} ${x2} ${y2}`;
+          const wavePath2 = `M ${x1} ${y1} Q ${(x1 + x2)/2 - (midX - (x1 + x2)/2)} ${(y1 + y2)/2 - (midY - (y1 + y2)/2)} ${x2} ${y2}`;
+          const straightPath = `M ${x1} ${y1} Q ${(x1 + x2)/2} ${(y1 + y2)/2} ${x2} ${y2}`;
+
+          tl.to(pathEl, {
+            attr: { d: wavePath1 },
+            duration: 1.5,
+            ease: "sine.inOut",
+          }, "waveStart")
+          .to(pathEl, {
+            attr: { d: wavePath2 },
+            duration: 1.2,
+            ease: "sine.inOut",
+          }, "waveStart+=1.5")
+          .to(pathEl, {
+            attr: { d: straightPath },
+            duration: 0.8,
+            ease: "sine.out",
+          }, "waveStart+=2.7");
+        });
       }
 
       const svgTexts = hudRingRef.current?.querySelectorAll("text");
       if (svgTexts && svgTexts.length > 0) {
-        tl.to(svgTexts, { fill: "rgba(0, 0, 0, 0.75)", duration: 4.5, ease: "none" }, "<");
+        tl.to(svgTexts, { fill: "rgba(0, 0, 0, 0.65)", duration: 3.5, ease: "none" }, "<");
       }
 
-      const headlineH2 = phase1Ref.current?.querySelector("h2");
-      if (headlineH2) tl.to(headlineH2, { color: "#000000", duration: 4.5, ease: "none" }, "<");
-
-      const headlineH3 = phase1Ref.current?.querySelector("h3");
-      if (headlineH3) tl.to(headlineH3, { color: "rgba(0, 0, 0, 0.55)", duration: 4.5, ease: "none" }, "<");
-
-      // Fade out Phase 1 Ring
+      // Instant transition: Ring fades out as background turns white and cards wall appears with zero delay
       tl.to(phase1Ref.current, {
         scale: 1.15,
         opacity: 0,
         filter: "blur(10px)",
-        duration: 1.2,
+        duration: 0.8,
         ease: "power2.inOut",
-      });
+      }, "-=0.8");
 
-      // Phase 2: Reveal Kinetic Chaos Wall on White Background
+      // Phase 2: Reveal Kinetic Chaos Wall instantly
       if (phase2WallRef.current) {
         tl.to(phase2WallRef.current, {
           opacity: 1,
-          duration: 1.2,
+          duration: 0.8,
           ease: "power2.out",
         }, "<");
       }
@@ -2857,13 +2888,15 @@ function KononenkoSequence() {
           <div ref={hudRingRef} className="absolute inset-0 pointer-events-none">
             <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
               {[
-                { angle: 202.5, label: "01" },
-                { angle: 157.5, label: "02" },
-                { angle: 112.5, label: "03" },
-                { angle: 67.5, label: "04" },
-                { angle: 22.5, label: "05" },
-                { angle: 337.5, label: "06" },
-              ].map(({ angle, label }) => {
+                { angle: 225, label: "01" },
+                { angle: 180, label: "02" },
+                { angle: 135, label: "03" },
+                { angle: 90, label: "04" },
+                { angle: 45, label: "05" },
+                { angle: 0, label: "06" },
+                { angle: 315, label: "07" },
+                { angle: 270, label: "08" },
+              ].map(({ angle, label }, idx) => {
                 const rad = (angle * Math.PI) / 180;
                 const x1 = 500 + 5 * Math.cos(rad);
                 const y1 = 500 + 5 * Math.sin(rad);
@@ -2871,10 +2904,37 @@ function KononenkoSequence() {
                 const y2 = 500 + 470 * Math.sin(rad);
                 const lx = 500 + 498 * Math.cos(rad);
                 const ly = 500 + 498 * Math.sin(rad);
+
+                // Perpendicular direction vector for dramatic rope wave amplitude
+                const dx = x2 - x1;
+                const dy = y2 - y1;
+                const len = Math.sqrt(dx * dx + dy * dy);
+                const perpX = -dy / len;
+                const perpY = dx / len;
+
+                // Amplify wave displacement (140px offset perpendicular to line)
+                const waveAmp = (idx % 2 === 0 ? 1 : -1) * 140;
+                const midX = (x1 + x2) / 2 + perpX * waveAmp;
+                const midY = (y1 + y2) / 2 + perpY * waveAmp;
+
+                const pathDataStraight = `M ${x1} ${y1} Q ${(x1 + x2) / 2} ${(y1 + y2) / 2} ${x2} ${y2}`;
+
                 return (
                   <g key={label}>
-                    <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(255,255,255,0.25)" strokeWidth="0.8" />
-                    <text x={lx} y={ly} textAnchor="middle" dominantBaseline="middle" fill="rgba(255,255,255,0.55)" fontFamily="monospace" fontSize="18">
+                    <path
+                      className="hud-rope-path"
+                      d={pathDataStraight}
+                      data-x1={x1}
+                      data-y1={y1}
+                      data-x2={x2}
+                      data-y2={y2}
+                      data-midx={midX}
+                      data-midy={midY}
+                      stroke="rgba(255,255,255,0.30)"
+                      strokeWidth="0.9"
+                      fill="none"
+                    />
+                    <text x={lx} y={ly} textAnchor="middle" dominantBaseline="middle" fill="rgba(255,255,255,0.60)" fontFamily="monospace" fontSize="18">
                       {label}
                     </text>
                   </g>
