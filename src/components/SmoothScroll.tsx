@@ -6,13 +6,14 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 export function SmoothScroll() {
   useEffect(() => {
     if (typeof window === "undefined") return;
+
     const lenis = new Lenis({
-      duration: 1.6,
-      easing: (t) => 1 - Math.pow(1 - t, 4), // Butter-smooth quintic easing
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Exponential smooth easing
       smoothWheel: true,
-      wheelMultiplier: 1.15,
-      touchMultiplier: 1.8,
-      infinite: false,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.5,
+      syncTouch: false,
     });
 
     lenis.on("scroll", ScrollTrigger.update);
@@ -29,5 +30,6 @@ export function SmoothScroll() {
       lenis.destroy();
     };
   }, []);
+
   return null;
 }

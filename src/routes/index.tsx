@@ -2748,7 +2748,7 @@ function KononenkoSequence() {
           start: "top top",
           end: "+=650%",
           pin: true,
-          scrub: true,
+          scrub: 0.6,
           anticipatePin: 1,
         },
       });
