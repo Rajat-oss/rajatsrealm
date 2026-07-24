@@ -2744,9 +2744,9 @@ function KononenkoSequence() {
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: "+=450%",
+          end: "+=650%",
           pin: true,
-          scrub: 1.2,
+          scrub: true,
           anticipatePin: 1,
         },
       });
@@ -2789,9 +2789,8 @@ function KononenkoSequence() {
       if (phase2WallRef.current) {
         tl.to(phase2WallRef.current, {
           opacity: 1,
-          y: 0,
-          duration: 1.5,
-          ease: "power3.out",
+          duration: 1.2,
+          ease: "power2.out",
         }, "<");
       }
 
@@ -2821,19 +2820,21 @@ function KononenkoSequence() {
             rotate: item.initialRot,
             scale: 1,
             filter: "blur(0px)",
-            duration: 1.5,
+            duration: 1.2,
             ease: "power3.out",
           },
-          "-=1.2"
+          "-=1.0"
         );
       });
 
-      // Hold wall visible cleanly on screen before unpinning
-      tl.to(phase2WallRef.current, {
-        y: 0,
-        duration: 2.0,
-        ease: "none",
-      });
+      // Pan the entire cards container smoothly upwards so lower cards scroll into view during page scroll
+      if (phase2WallRef.current) {
+        tl.to(phase2WallRef.current, {
+          yPercent: -68,
+          duration: 5.0,
+          ease: "none",
+        });
+      }
     }, section);
 
     return () => ctx.revert();
@@ -2893,37 +2894,10 @@ function KononenkoSequence() {
         {/* Phase 2: Kinetic Chaos Wall on White Background */}
         <div
           ref={phase2WallRef}
-          className="absolute inset-0 z-30 flex flex-col justify-center max-w-[110rem] mx-auto px-6 md:px-12 py-12 overflow-y-auto pointer-events-auto opacity-0"
+          className="absolute inset-0 z-30 flex flex-col justify-start max-w-[110rem] mx-auto px-6 md:px-12 py-12 pointer-events-auto opacity-0"
         >
-          {/* Header & Category Filter Pills */}
-          <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
-              <span className="font-mono text-xs uppercase tracking-[0.3em] text-black/70 font-extrabold">
-                CURATED MOODBOARD • KINETIC CHAOS
-              </span>
-            </div>
-
-            {/* Micro Filter Pills */}
-            <div className="flex flex-wrap items-center gap-2 bg-black/5 backdrop-blur-md p-1.5 rounded-full border border-black/15 shadow-md">
-              {filterTabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveFilter(tab.id)}
-                  className={`px-4 py-1.5 rounded-full font-mono text-xs uppercase tracking-wider transition-all duration-300 cursor-pointer ${
-                    activeFilter === tab.id
-                      ? "bg-black text-white font-extrabold shadow-lg scale-105"
-                      : "text-black/60 hover:text-black hover:bg-black/10"
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
           {/* Scattered Unaligned Grid Wall on White Canvas */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 pb-16">
             {OBSESSED_ITEMS.map((item, idx) => {
               const isMatch = activeFilter === "all" || item.category === activeFilter;
 
