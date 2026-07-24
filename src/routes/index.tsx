@@ -1765,26 +1765,17 @@ function Contact() {
           </Reveal>
         </div>
 
-        <div className="mt-14 grid gap-6 border-t border-white/5 pt-10 md:grid-cols-3">
-          <ContactCard icon={MapPin} k="Based" v="Bhopal, MP · India" />
-          <ContactCard icon={Sparkles} k="Availability" v="Booking Q2 · 2026" />
-          <ContactCard icon={Rocket} k="Best for" v="MVPs, marketing sites, product engineering" />
+        <div className="mt-14 border-t border-white/5 pt-10 text-center overflow-hidden">
+          <h2 className="font-display text-[clamp(4.5rem,16vw,20rem)] font-black uppercase tracking-tighter leading-[0.85] text-foreground select-none">
+            RAJAT JHADE
+          </h2>
         </div>
       </div>
     </section>
   );
 }
 
-function ContactCard({ icon: Icon, k, v }: { icon: typeof MapPin; k: string; v: string }) {
-  return (
-    <div className="glass rounded-2xl p-6">
-      <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-        <Icon className="h-3 w-3 text-primary" /> {k}
-      </div>
-      <div className="mt-3 font-display text-lg text-foreground">{v}</div>
-    </div>
-  );
-}
+
 
 /* ---------- Footer ---------- */
 function Footer() {
