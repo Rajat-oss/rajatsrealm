@@ -32,6 +32,7 @@ import {
 
 import { CustomCursor } from "@/components/CustomCursor";
 import { SmoothScroll } from "@/components/SmoothScroll";
+import { VinylMusicPlayer } from "@/components/VinylMusicPlayer";
 
 import project1 from "@/assets/project-vintvate.png";
 import project2 from "@/assets/project-stackhouse.png";
@@ -151,12 +152,13 @@ const SERVICES = [
   { icon: Cpu, title: "AI features.", text: "LLM interfaces, agents and RAG plumbing embedded in real products." },
 ];
 
-function Portfolio() {
+export function Portfolio() {
   const [isContactOpen, setIsContactOpen] = useState(false);
   return (
     <div className="dark relative min-h-screen overflow-x-clip bg-background text-foreground">
       <SmoothScroll />
       <CustomCursor />
+      <VinylMusicPlayer />
       <BackgroundFX />
       <Nav onOpenContact={() => setIsContactOpen(true)} />
       <Hero />
