@@ -33,6 +33,7 @@ import {
 import { CustomCursor } from "@/components/CustomCursor";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { VinylMusicPlayer } from "@/components/VinylMusicPlayer";
+import { Preloader } from "@/components/Preloader";
 
 import project1 from "@/assets/project-vintvate.png";
 import project2 from "@/assets/project-stackhouse.png";
@@ -153,9 +154,23 @@ const SERVICES = [
 ];
 
 export function Portfolio() {
+  const [isLoading, setIsLoading] = useState(true);
   const [isContactOpen, setIsContactOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isLoading && typeof window !== "undefined") {
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 100);
+    }
+  }, [isLoading]);
+
   return (
     <div className="dark relative min-h-screen overflow-x-clip bg-background text-foreground">
+      <AnimatePresence mode="wait">
+        {isLoading && <Preloader key="preloader" onComplete={() => setIsLoading(false)} />}
+      </AnimatePresence>
+
       <SmoothScroll />
       <CustomCursor />
       <VinylMusicPlayer />
